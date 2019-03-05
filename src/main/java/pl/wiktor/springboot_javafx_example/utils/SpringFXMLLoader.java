@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.ResourceBundle;
  * once the Spring Application context has been bootstrapped.
  */
 @Component
+@Lazy
 public class SpringFXMLLoader {
     private final ResourceBundle resourceBundle;
     private final ApplicationContext context;

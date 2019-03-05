@@ -5,6 +5,7 @@
  */
 package pl.wiktor.springboot_javafx_example.utils;
 
+
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
