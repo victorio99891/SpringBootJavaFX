@@ -1,6 +1,5 @@
 package pl.wiktor.springboot_javafx_example.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,7 +26,6 @@ public class MainController implements Initializable {
     private void showDialog() {
 
         stageManager.showScene(FxmlView.NEWWINDOW);
-
     }
 
     @Override
