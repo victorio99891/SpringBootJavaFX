@@ -9,7 +9,25 @@
             <column name="USER_ID" autoIncrement="true" type="BIGINT">
                 <constraints primaryKey="true" unique="true" nullable="false"/>
             </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+        <createTable tableName="BOOKS">
+            <column name="BOOK_ID" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sqlFile dbms="h2"
+                 encoding="utf8"
+                 path="data.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
     </changeSet>
 
 </databaseChangeLog>
