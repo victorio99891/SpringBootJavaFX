@@ -2,24 +2,27 @@ package pl.wiktor.springboot_javafx_example.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
+import javafx.scene.control.Label;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import pl.wiktor.springboot_javafx_example.service.UserService;
 import pl.wiktor.springboot_javafx_example.utils.StageManager;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 @Controller
-public class NewWindowController implements Initializable {
+public class NewWindowController {
 
-    @Lazy
-    @Autowired
-    private StageManager stageManager;
+    private final StageManager stageManager;
+
+    private final UserService userService;
+
+    public NewWindowController(@Lazy StageManager stageManager, @Lazy UserService userService) {
+        this.stageManager = stageManager;
+        this.userService = userService;
+    }
+
+    @FXML
+    Label label1;
 
     @FXML
     Button button1;
@@ -27,13 +30,11 @@ public class NewWindowController implements Initializable {
 
     @FXML
     private void changeScene(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        stageManager.closeStageOnEvent(event);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    @FXML
+    public void initialize() {
+        label1.setText(userService.findOne(1L).getName());
     }
 }
