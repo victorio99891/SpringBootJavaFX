@@ -14,7 +14,7 @@ public class MainController {
 
     private final StageManager stageManager;
 
-    private final UserService userService;
+    private UserService userService;
 
     public MainController(@Lazy StageManager stageManager, UserService userService) {
         this.stageManager = stageManager;
@@ -25,7 +25,7 @@ public class MainController {
     Button button1;
 
     @FXML
-    public Label label1;
+    Label label1;
 
     @FXML
     private void showDialog() {

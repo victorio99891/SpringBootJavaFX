@@ -1,20 +1,18 @@
 package pl.wiktor.springboot_javafx_example.utils;
 
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import pl.wiktor.springboot_javafx_example.view.FxmlView;
 
+import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.logging.Level;
 
 import static org.slf4j.LoggerFactory.getLogger;
-
 
 public class StageManager {
 
@@ -34,9 +32,7 @@ public class StageManager {
 
     public void showScene(final FxmlView view) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource(view.getFxmlFile()));
-            Scene scene = new Scene(fxmlLoader.load());
+            Scene scene = new Scene(springFXMLLoader.load(view.getFxmlFile()));
             Stage stage = new Stage();
             stage.setTitle(view.getTitle());
             stage.setScene(scene);
@@ -44,6 +40,12 @@ public class StageManager {
         } catch (IOException e) {
             LOG.error("Failed to create new Window.", e);
         }
+    }
+
+    public void closeStageOnEvent(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     private void show(final Parent rootnode, String title) {
