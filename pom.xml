@@ -16,6 +16,8 @@
     <properties>
         <java.version>1.8</java.version>
         <lombok.version>1.18.6</lombok.version>
+        <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
+        <liquibase-maven-plugin.version>3.6.3</liquibase-maven-plugin.version>
         <javafx-maven-plugin.version>8.8.3</javafx-maven-plugin.version>
         <tomcat-jdbc.version>9.0.12</tomcat-jdbc.version>
     </properties>
@@ -74,6 +76,22 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!--Database dependencies-->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>${liquibase-maven-plugin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate5</artifactId>
+            <version>${liquibase-hibernate5.version}</version>
         </dependency>
 
 
