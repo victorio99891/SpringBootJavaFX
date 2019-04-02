@@ -3,12 +3,14 @@ package pl.wiktor.springboot_javafx_example;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import pl.wiktor.springboot_javafx_example.utils.StageManager;
 import pl.wiktor.springboot_javafx_example.view.FxmlView;
 
 @SpringBootApplication
+@LiquibaseDataSource
 public class SpringbootJavafxExampleApplication extends Application {
 
     private ConfigurableApplicationContext springContext;
