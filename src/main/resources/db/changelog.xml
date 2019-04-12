@@ -9,16 +9,17 @@
             <column name="USER_ID" autoIncrement="true" type="BIGINT">
                 <constraints primaryKey="true" unique="true" nullable="false"/>
             </column>
-            <column name="NAME" type="VARCHAR(255)">
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-        </createTable>
-        <createTable tableName="BOOKS">
-            <column name="BOOK_ID" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" unique="true" nullable="false"/>
-            </column>
-            <column name="TITLE" type="VARCHAR(255)">
+            <column name="LAST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
 
