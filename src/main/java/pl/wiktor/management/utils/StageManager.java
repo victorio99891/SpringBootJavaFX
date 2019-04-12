@@ -1,15 +1,11 @@
 package pl.wiktor.management.utils;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.slf4j.Logger;
@@ -92,13 +88,13 @@ public class StageManager {
         }
     }
 
-    private Scene prepareScene(Parent rootnode) {
+    private Scene prepareScene(Parent rootNode) {
         Scene scene = primaryStage.getScene();
 
         if (scene == null) {
-            scene = new Scene(rootnode);
+            scene = new Scene(rootNode);
         }
-        scene.setRoot(rootnode);
+        scene.setRoot(rootNode);
         return scene;
     }
 
