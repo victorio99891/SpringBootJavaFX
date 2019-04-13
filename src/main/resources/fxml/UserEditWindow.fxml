@@ -1,13 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.UserEditController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="276.0" prefWidth="386.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.UserEditController">
    <children>
-      <Label fx:id="userLabel" layoutX="119.0" layoutY="117.0" prefHeight="17.0" prefWidth="353.0" text="asdfasdfasfsadf" />
+      <VBox prefHeight="276.0" prefWidth="386.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="36.0" prefWidth="386.0">
+               <children>
+                  <Label fx:id="userLabel" alignment="CENTER" prefHeight="17.0" prefWidth="353.0" text="asdfasdfasfsadf" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="386.0">
+               <children>
+                  <Label text="Name:">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="firstNameLabel" prefHeight="25.0" prefWidth="264.0">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="46.0" prefHeight="38.0" prefWidth="386.0">
+               <children>
+                  <Label text="Last name:">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="lastNameLabel" prefHeight="25.0" prefWidth="264.0">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="84.0" prefHeight="38.0" prefWidth="386.0">
+               <children>
+                  <Label text="Email:">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="emailLabel" editable="false" prefHeight="25.0" prefWidth="264.0">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="122.0" prefHeight="38.0" prefWidth="386.0">
+               <children>
+                  <Label text="Role:">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="roleLabel" prefHeight="25.0" prefWidth="264.0">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="386.0">
+               <children>
+                  <Button fx:id="submitButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" text="Submit">
+                     <HBox.margin>
+                        <Insets right="30.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" text="Save">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
