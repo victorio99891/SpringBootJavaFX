@@ -23,6 +23,15 @@
             </column>
         </createTable>
 
+        <createTable tableName="ROLES">
+            <column name="ROLE_ID" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+
         <sqlFile dbms="h2"
                  encoding="utf8"
                  path="data.sql"

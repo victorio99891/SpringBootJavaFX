@@ -7,7 +7,6 @@ import pl.wiktor.management.entity.UserEntity;
 import pl.wiktor.management.exceptions.ExceptionInfo;
 import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.mapper.UserMapper;
-import pl.wiktor.management.model.UserBO;
 import pl.wiktor.management.repository.UserRepository;
 
 import java.util.Optional;
@@ -16,27 +15,28 @@ import java.util.Optional;
 @Service
 public class AuthenticationService {
 
-    private UserBO authenticatedUser;
-
+    //    private UserBO authenticatedUser;
+    private final AppContext appContext;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public AuthenticationService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserMapper userMapper) {
+    public AuthenticationService(AppContext appContext, PasswordEncoder passwordEncoder, UserRepository userRepository, UserMapper userMapper) {
+        this.appContext = appContext;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
     public void clearCredentials() {
-        this.authenticatedUser = null;
+        this.appContext.setAuthenticatedUser(null);
     }
 
     public boolean checkUserCredentials(String login, String password) {
         Optional<UserEntity> userEntity = userRepository.findByEmail(login);
         if (userEntity.isPresent()) {
             if (passwordEncoder.matches(password, userEntity.get().getPassword())) {
-                this.authenticatedUser = userMapper.fromEntityToBO(userEntity.get());
+                this.appContext.setAuthenticatedUser(userMapper.fromEntityToBO(userEntity.get()));
                 return true;
             } else {
                 ExceptionResolverService.resolve(ExceptionInfo.BAD_CREDENTIALS);

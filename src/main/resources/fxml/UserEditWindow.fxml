@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.UserEditController">
+   <children>
+      <Label fx:id="userLabel" layoutX="119.0" layoutY="117.0" prefHeight="17.0" prefWidth="353.0" text="asdfasdfasfsadf" />
+   </children>
+</AnchorPane>

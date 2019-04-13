@@ -1,1 +1,1 @@
-java -jar ./target/JAVAFXSPRINGBOOT.jar
+java -jar ./target/ManagementApp_SpringBootJavaFX.jar

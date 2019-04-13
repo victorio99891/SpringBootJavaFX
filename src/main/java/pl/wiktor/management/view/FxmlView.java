@@ -29,15 +29,15 @@ public enum FxmlView {
         }
     },
 
-    NEWWINDOW {
+    USER_EDIT {
         @Override
         public String getTitle() {
-            return getStringFromResourceBundle("newwindow.title");
+            return getStringFromResourceBundle("user_edit.title");
         }
 
         @Override
         public String getFxmlFile() {
-            return "/fxml/NewWindow.fxml";
+            return "/fxml/UserEditWindow.fxml";
         }
 
     };
