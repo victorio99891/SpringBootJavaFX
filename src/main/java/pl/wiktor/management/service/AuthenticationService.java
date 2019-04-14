@@ -7,6 +7,8 @@ import pl.wiktor.management.entity.UserEntity;
 import pl.wiktor.management.exceptions.ExceptionInfo;
 import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.mapper.UserMapper;
+import pl.wiktor.management.model.RoleEnum;
+import pl.wiktor.management.model.UserBO;
 import pl.wiktor.management.repository.UserRepository;
 
 import java.util.Optional;
@@ -15,7 +17,6 @@ import java.util.Optional;
 @Service
 public class AuthenticationService {
 
-    //    private UserBO authenticatedUser;
     private final AppContext appContext;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -30,6 +31,14 @@ public class AuthenticationService {
 
     public void clearCredentials() {
         this.appContext.setAuthenticatedUser(null);
+    }
+
+    public boolean isUser() {
+        return true;
+    }
+
+    public boolean isAdministrator() {
+        return this.appContext.getAuthenticatedUser().getRole().equals(RoleEnum.ADMINISTRATOR.name());
     }
 
     public boolean checkUserCredentials(String login, String password) {

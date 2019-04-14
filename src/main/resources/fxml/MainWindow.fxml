@@ -38,9 +38,9 @@
                         </HBox>
                     </children>
                 </VBox>
-                <TabPane prefHeight="564.0" prefWidth="904.0" style="-fx-background-color: #f9f6db;" tabClosingPolicy="UNAVAILABLE">
+                <TabPane fx:id="tabPaneComponent" prefHeight="564.0" prefWidth="904.0" style="-fx-background-color: #f9f6db;" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab text="User Managment">
+                        <Tab fx:id="userManagementTab" closable="false" text="User Managment">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -51,10 +51,11 @@
                                                     <children>
                                                         <TableView fx:id="user_management_table" prefHeight="200.0" prefWidth="200.0">
                                                             <columns>
-                                                                <TableColumn fx:id="column_id" editable="false" prefWidth="100.0" sortable="false" text="ID" />
-                                                                <TableColumn fx:id="column_lastName" prefWidth="234.0" text="LASTNAME" />
-                                                                <TableColumn fx:id="column_name" prefWidth="225.0" text="NAME" />
-                                                                <TableColumn fx:id="column_email" editable="false" prefWidth="239.0" sortable="false" text="EMAIL" />
+                                                                <TableColumn fx:id="column_id" editable="false" prefWidth="61.0" sortable="false" text="ID" />
+                                                                <TableColumn fx:id="column_lastName" prefWidth="184.0" text="LASTNAME" />
+                                                                <TableColumn fx:id="column_name" prefWidth="190.0" text="NAME" />
+                                                                <TableColumn fx:id="column_email" editable="false" prefWidth="199.0" sortable="false" text="EMAIL" />
+                                                                <TableColumn fx:id="column_role" prefWidth="164.0" text="ROLE" />
                                                             </columns>
                                                         </TableView>
                                                     </children>
@@ -65,7 +66,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="Item Management">
+                        <Tab closable="false" text="Item Management">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                             </content>

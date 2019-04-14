@@ -40,6 +40,18 @@ public enum FxmlView {
             return "/fxml/UserEditWindow.fxml";
         }
 
+    },
+    USER_REGISTER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("user_register.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/CreateNewUserWindow.fxml";
+        }
+
     };
 
     public abstract String getTitle();

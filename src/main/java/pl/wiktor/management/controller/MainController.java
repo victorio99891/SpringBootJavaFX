@@ -3,10 +3,7 @@ package pl.wiktor.management.controller;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
@@ -27,6 +24,10 @@ public class MainController {
     @FXML
     public Label authenticatedUserLabel;
     @FXML
+    public TabPane tabPaneComponent;
+    @FXML
+    public Tab userManagementTab;
+    @FXML
     public TableColumn<UserBO, Long> column_id;
     @FXML
     public TableColumn<UserBO, String> column_lastName;
@@ -34,6 +35,8 @@ public class MainController {
     public TableColumn<UserBO, String> column_name;
     @FXML
     public TableColumn<UserBO, String> column_email;
+    @FXML
+    public TableColumn<UserBO, String> column_role;
     @FXML
     public TableView<UserBO> user_management_table;
 
@@ -54,6 +57,7 @@ public class MainController {
         this.userService = userService;
     }
 
+
     @FXML
     public void logout(ActionEvent actionEvent) {
         authenticationService.clearCredentials();
@@ -62,7 +66,12 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        if (!authenticationService.isAdministrator()) {
+            userManagementTab.setDisable(true);
+            tabPaneComponent.getTabs().remove(userManagementTab);
+        }
         stageManager.fadeInAnimation(window);
+
         this.authenticatedUserLabel.setText(this.appContext.getAuthenticatedUser().getLastName()
                 + " "
                 + this.appContext.getAuthenticatedUser().getFirstName()
@@ -85,12 +94,14 @@ public class MainController {
         });
     }
 
-    private void fillUserManagementTable() {
+    public void fillUserManagementTable() {
         List<UserBO> userBOList = userService.findAllUsers();
         column_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         column_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         column_name.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         column_email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        column_role.setCellValueFactory(new PropertyValueFactory<>("role"));
+        user_management_table.refresh();
         user_management_table.setItems(FXCollections.observableArrayList(userBOList));
     }
 }

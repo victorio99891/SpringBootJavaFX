@@ -35,7 +35,7 @@ public class StageManager {
     public void fadeInAnimation(Node node) {
         node.setOpacity(0);
         FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.seconds(1));
+        fadeTransition.setDuration(Duration.millis(500));
         fadeTransition.setNode(node);
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
@@ -44,7 +44,7 @@ public class StageManager {
 
     public void fadeOutAnimation(Node node, FxmlView fxmlView) {
         FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.seconds(1));
+        fadeTransition.setDuration(Duration.millis(500));
         fadeTransition.setNode(node);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);

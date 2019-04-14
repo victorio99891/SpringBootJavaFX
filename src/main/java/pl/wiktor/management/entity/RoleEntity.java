@@ -14,7 +14,7 @@ public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROLE_ID", unique = true, nullable = false)
-    private Long role;
+    private Long id;
 
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;

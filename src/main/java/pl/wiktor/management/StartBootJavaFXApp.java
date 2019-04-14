@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.wiktor.management.utils.StageManager;
@@ -14,6 +15,7 @@ import pl.wiktor.management.view.FxmlView;
 
 @SpringBootApplication
 @LiquibaseDataSource
+@EnableAspectJAutoProxy
 public class StartBootJavaFXApp extends Application {
 
     private ConfigurableApplicationContext springContext;

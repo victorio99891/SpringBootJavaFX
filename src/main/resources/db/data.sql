@@ -1,9 +1,8 @@
 INSERT INTO ROLES (NAME)
 values ('ADMINISTRATOR'),
-       ('USER'),
-       ('MANAGER');
+       ('USER');
 
 
-INSERT INTO USERS (EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
-values ('test@test.com', 'Adam', 'Kowalski', '$2a$10$kfqQI4x268P.3Jg/y14iL./KFf8DhcVqAeNGM9f/wOUfTpczvKKnG'),
-       ('test1@test.com', 'Anna', 'Nowak', '$2a$10$m78mGhuorg94Pxvj8b0YGOso79GarDJMPAqzDeVKMyt7tXkypgM0q!');
+INSERT INTO USERS (EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, ROLE_ID)
+values ('test@test.com', 'Adam', 'Kowalski', '$2a$10$3gC0OqRcgWBkeQe9wVwU3uzriHThp7DM6GdrB0QYD.XXfWNOozKiy', 1),
+       ('test1@test.com', 'Anna', 'Nowak', '$2a$10$GR4fXpgTG6/VpKO/7Dy5y.Nuqmdl7nxwXZzfKLZSZXlo1txHKu7kG', 2);

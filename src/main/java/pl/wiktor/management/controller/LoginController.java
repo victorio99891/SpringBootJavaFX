@@ -1,10 +1,12 @@
 package pl.wiktor.management.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +42,15 @@ public class LoginController {
     }
 
     @FXML
-    public void login(ActionEvent actionEvent) {
+    public void loginByEnter(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            login();
+        }
+    }
+
+
+    @FXML
+    public void login() {
 
         if (authenticationService.checkUserCredentials(this.loginLabel.getText(), this.passwordLabel.getText())) {
             stageManager.fadeOutAnimation(window, FxmlView.MAIN);
@@ -51,5 +61,10 @@ public class LoginController {
     @FXML
     public void initialize() {
         stageManager.fadeInAnimation(window);
+    }
+
+    @FXML
+    public void openUserCreate(MouseEvent mouseEvent) {
+        stageManager.showScene(FxmlView.USER_REGISTER);
     }
 }

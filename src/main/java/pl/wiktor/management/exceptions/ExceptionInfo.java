@@ -1,17 +1,7 @@
 package pl.wiktor.management.exceptions;
 
 public enum ExceptionInfo {
-    USER_NOT_FOUND {
-        @Override
-        public String getTitle() {
-            return "[USER NOT FOUND]";
-        }
-
-        @Override
-        public String getMessage() {
-            return "Unfortunately user has been not found in database.";
-        }
-    }, BAD_CREDENTIALS {
+    BAD_CREDENTIALS {
         @Override
         public String getTitle() {
             return "[BAD CREDENTIALS]";
@@ -20,6 +10,17 @@ public enum ExceptionInfo {
         @Override
         public String getMessage() {
             return "Login or password is incorrect.";
+        }
+    },
+    USER_EXIST {
+        @Override
+        public String getTitle() {
+            return "[USER EXIST]";
+        }
+
+        @Override
+        public String getMessage() {
+            return "Email currently exist in database.\n Please try another one.";
         }
     };
 
