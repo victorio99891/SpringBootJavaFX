@@ -1,0 +1,5 @@
+.refreshButton {
+    -fx-background-image: url('/icon/refresh.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 70 70;
+}

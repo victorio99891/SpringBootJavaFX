@@ -12,6 +12,8 @@ import pl.wiktor.management.model.UserBO;
 import pl.wiktor.management.repository.RoleRepository;
 import pl.wiktor.management.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,5 +65,27 @@ public class UserService {
 
     public UserEntity findOne(Long id) {
         return userRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
+    public List<UserBO> findByParameter(String parameter, String searchValue) {
+        Optional<UserEntity> userEntity;
+        if (parameter.equals("ID")) {
+            userEntity = userRepository.findById(Long.valueOf(searchValue));
+            if (userEntity.isPresent()) {
+                return Collections.singletonList(userMapper.fromEntityToBO(userEntity.get()));
+            } else {
+                return Collections.emptyList();
+            }
+        } else if (parameter.equals("FIRSTNAME")) {
+            return userRepository.findByFirstNameContainingIgnoringCase(searchValue).stream().map(userMapper::fromEntityToBO).collect(Collectors.toList());
+        } else if (parameter.equals("LASTNAME")) {
+            return userRepository.findByLastNameContainingIgnoringCase(searchValue).stream().map(userMapper::fromEntityToBO).collect(Collectors.toList());
+        } else if (parameter.equals("EMAIL")) {
+            return userRepository.findByEmailContainingIgnoringCase(searchValue).stream().map(userMapper::fromEntityToBO).collect(Collectors.toList());
+        } else if (parameter.equals("ROLE")) {
+            return userRepository.findByRole_NameContainingIgnoringCase(searchValue).stream().map(userMapper::fromEntityToBO).collect(Collectors.toList());
+        }
+
+        return new ArrayList<>();
     }
 }

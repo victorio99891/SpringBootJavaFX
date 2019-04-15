@@ -8,6 +8,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import pl.wiktor.management.exceptions.ExceptionInfo;
+import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.model.UserBO;
 import pl.wiktor.management.service.AppContext;
 import pl.wiktor.management.service.AuthenticationService;
@@ -15,6 +17,7 @@ import pl.wiktor.management.service.UserService;
 import pl.wiktor.management.utils.StageManager;
 import pl.wiktor.management.view.FxmlView;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -39,6 +42,16 @@ public class MainController {
     public TableColumn<UserBO, String> column_role;
     @FXML
     public TableView<UserBO> user_management_table;
+    @FXML
+    public Label countResultLabel;
+    @FXML
+    public ChoiceBox<String> columnSearchChoicebox;
+    @FXML
+    public TextField textSearchText;
+    @FXML
+    public Button searchButton;
+    @FXML
+    public Button clearButton;
 
 
     private final AppContext appContext;
@@ -46,11 +59,14 @@ public class MainController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
 
+    List<UserBO> userBOList;
+
 
     public MainController(@Lazy StageManager stageManager,
                           AppContext appContext,
                           AuthenticationService authenticationService,
-                          UserService userService) {
+                          UserService userService
+    ) {
         this.stageManager = stageManager;
         this.appContext = appContext;
         this.authenticationService = authenticationService;
@@ -76,8 +92,16 @@ public class MainController {
                 + " "
                 + this.appContext.getAuthenticatedUser().getFirstName()
                 + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]");
-        fillUserManagementTable();
+        userBOList = userService.findAllUsers();
+        fillUserManagementTable(userBOList);
+        fillSearchCheckList();
         openUserEditWindow();
+    }
+
+    private void fillSearchCheckList() {
+        List<String> columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "EMAIL", "ROLE");
+        this.columnSearchChoicebox.setItems(FXCollections.observableArrayList(columnNames));
+        this.columnSearchChoicebox.setValue("ID");
     }
 
     private void openUserEditWindow() {
@@ -94,8 +118,7 @@ public class MainController {
         });
     }
 
-    public void fillUserManagementTable() {
-        List<UserBO> userBOList = userService.findAllUsers();
+    public void fillUserManagementTable(List<UserBO> userBOList) {
         column_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         column_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         column_name.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -103,5 +126,36 @@ public class MainController {
         column_role.setCellValueFactory(new PropertyValueFactory<>("role"));
         user_management_table.refresh();
         user_management_table.setItems(FXCollections.observableArrayList(userBOList));
+        countResultLabel.setText(String.valueOf(userBOList.size()));
+    }
+
+    public void search(ActionEvent actionEvent) {
+        List<UserBO> serachList;
+        if (!this.textSearchText.getText().isEmpty() && (this.textSearchText.getText() != null)) {
+            if (!this.columnSearchChoicebox.getValue().equals("ID")) {
+                serachList = userService.findByParameter(this.columnSearchChoicebox.getValue(), this.textSearchText.getText());
+                fillUserManagementTable(serachList);
+            } else {
+                if (this.textSearchText.getText().matches("^[0-9]*$")) {
+                    serachList = userService.findByParameter(this.columnSearchChoicebox.getValue(), this.textSearchText.getText());
+                    fillUserManagementTable(serachList);
+                } else {
+                    ExceptionResolverService.resolve(ExceptionInfo.ID_SHOULD_BE_NUMBER);
+                }
+            }
+        }
+
+    }
+
+    public void clearResults(ActionEvent actionEvent) {
+        fillUserManagementTable(this.userBOList);
+        this.textSearchText.setText("");
+    }
+
+    public void refresh(ActionEvent actionEvent) {
+        this.userBOList = userService.findAllUsers();
+        this.textSearchText.setText("");
+        this.columnSearchChoicebox.setValue("ID");
+        fillUserManagementTable(this.userBOList);
     }
 }

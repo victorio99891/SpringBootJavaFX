@@ -22,6 +22,17 @@ public enum ExceptionInfo {
         public String getMessage() {
             return "Email currently exist in database.\n Please try another one.";
         }
+    },
+    ID_SHOULD_BE_NUMBER {
+        @Override
+        public String getTitle() {
+            return "[WRONG FORMAT]";
+        }
+
+        @Override
+        public String getMessage() {
+            return "ID should be an integer number.";
+        }
     };
 
 

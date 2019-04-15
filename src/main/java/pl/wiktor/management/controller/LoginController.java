@@ -9,7 +9,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.service.AuthenticationService;
@@ -34,7 +33,6 @@ public class LoginController {
 
     public LoginController(@Lazy StageManager stageManager,
                            AuthenticationService authenticationService,
-                           PasswordEncoder passwordEncoder,
                            ExceptionResolverService exceptionResolverService) {
         this.stageManager = stageManager;
         this.authenticationService = authenticationService;
@@ -51,11 +49,9 @@ public class LoginController {
 
     @FXML
     public void login() {
-
         if (authenticationService.checkUserCredentials(this.loginLabel.getText(), this.passwordLabel.getText())) {
             stageManager.fadeOutAnimation(window, FxmlView.MAIN);
         }
-
     }
 
     @FXML
