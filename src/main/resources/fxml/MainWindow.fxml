@@ -15,26 +15,30 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="904.0" style="-fx-background-color: #d9d9db;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="904.0" style="-fx-background-color: #d9d9db;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
     <children>
         <VBox prefHeight="614.0" prefWidth="904.0">
             <children>
-                <VBox alignment="CENTER" prefHeight="32.0" prefWidth="904.0">
+                <VBox alignment="CENTER" prefHeight="34.0" prefWidth="904.0">
                     <children>
                         <HBox alignment="CENTER" prefHeight="31.0" prefWidth="668.0">
                             <children>
-                                <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="790.0">
+                                <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="634.0">
                                     <children>
-                                        <Label text="You logged as: " />
-                                        <Label fx:id="authenticatedUserLabel" prefHeight="17.0" prefWidth="685.0" style="-fx-text-fill: #004ac1; -fx-font-weight: bold;" />
+                                        <Label prefHeight="17.0" prefWidth="97.0" text="You logged as: " />
+                                        <Label fx:id="authenticatedUserLabel" prefHeight="17.0" prefWidth="490.0" style="-fx-text-fill: #004ac1; -fx-font-weight: bold;" />
                                     </children>
                                     <HBox.margin>
                                         <Insets left="20.0" />
                                     </HBox.margin>
                                 </HBox>
-                                <HBox alignment="CENTER" prefHeight="35.0" prefWidth="122.0">
+                                <HBox alignment="CENTER" prefHeight="31.0" prefWidth="241.0">
                                     <children>
-                                        <Button mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="76.0" text="Logout" />
+                                        <Button mnemonicParsing="false" onAction="#changePassword" prefHeight="25.0" prefWidth="119.0" text="Change Password">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin></Button>
+                              <Button layoutX="33.0" layoutY="13.0" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="76.0" style="-fx-font-weight: bold;" text="Logout" />
                                     </children>
                                 </HBox>
                             </children>
@@ -51,7 +55,7 @@
                                             <children>
                                                 <VBox prefHeight="542.0" prefWidth="108.0">
                                        <children>
-                                          <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" prefHeight="70.0" prefWidth="70.0" styleClass="refreshButton" stylesheets="@../css/Main.css">
+                                          <Button fx:id="refreshButton_USER" mnemonicParsing="false" onAction="#refresh_USER" prefHeight="70.0" prefWidth="70.0" styleClass="refreshButton" stylesheets="@../css/Main.css">
                                              <VBox.margin>
                                                 <Insets left="20.0" top="20.0" />
                                              </VBox.margin>
@@ -59,13 +63,13 @@
                                        </children></VBox>
                                                 <VBox prefHeight="527.0" prefWidth="789.0">
                                                     <children>
-                                                        <TableView fx:id="user_management_table" prefHeight="475.0" prefWidth="792.0">
+                                                        <TableView fx:id="userManagementTable_USER" prefHeight="475.0" prefWidth="792.0">
                                                             <columns>
-                                                                <TableColumn fx:id="column_id" editable="false" prefWidth="61.0" sortable="false" text="ID" />
-                                                                <TableColumn fx:id="column_lastName" prefWidth="184.0" text="LASTNAME" />
-                                                                <TableColumn fx:id="column_name" prefWidth="157.0" text="FIRSTNAME" />
-                                                                <TableColumn fx:id="column_email" editable="false" prefWidth="223.0" sortable="false" text="EMAIL" />
-                                                                <TableColumn fx:id="column_role" prefWidth="173.0" text="ROLE" />
+                                                                <TableColumn fx:id="column_id_USER" editable="false" prefWidth="61.0" sortable="false" text="ID" />
+                                                                <TableColumn fx:id="column_lastName_USER" prefWidth="184.0" text="LASTNAME" />
+                                                                <TableColumn fx:id="column_firstName_USER" prefWidth="157.0" text="FIRSTNAME" />
+                                                                <TableColumn fx:id="column_email_USER" editable="false" prefWidth="223.0" sortable="false" text="EMAIL" />
+                                                                <TableColumn fx:id="column_role_USER" prefWidth="173.0" text="ROLE" />
                                                             </columns>
                                              <VBox.margin>
                                                 <Insets right="10.0" />
@@ -78,7 +82,7 @@
                                                       <Insets right="5.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <Label fx:id="countResultLabel" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="85.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="2147465123">
+                                                <Label fx:id="countResultLabel_USER" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="85.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="2147465123">
                                                    <HBox.margin>
                                                       <Insets right="15.0" />
                                                    </HBox.margin>
@@ -95,7 +99,7 @@
                                                       <Insets right="5.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <ChoiceBox fx:id="columnSearchChoicebox" prefWidth="150.0">
+                                                <ChoiceBox fx:id="searchChoiceBox_USER" prefWidth="150.0">
                                                    <HBox.margin>
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
@@ -105,17 +109,17 @@
                                                       <Insets right="5.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <TextField fx:id="textSearchText" prefHeight="25.0" prefWidth="269.0">
+                                                <TextField fx:id="searchTextBox_USER" prefHeight="25.0" prefWidth="269.0">
                                                    <HBox.margin>
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </TextField>
-                                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="115.0" text="Search">
+                                                <Button fx:id="searchButton_USER" mnemonicParsing="false" onAction="#search_USER" prefHeight="25.0" prefWidth="115.0" text="Search">
                                                    <HBox.margin>
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearResults" text="Clear" />
+                                                <Button fx:id="clearButton_USER" mnemonicParsing="false" onAction="#clearResults_USER" text="Clear" />
                                              </children>
                                           </HBox>
                                                     </children>
@@ -126,11 +130,174 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab closable="false" style="-fx-font-weight: bold;" text="Item Management">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                            </content>
-                        </Tab>
+                  <Tab fx:id="patientManagementTab" closable="false" style="-fx-font-weight: bold;" text="Patient Management">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="555.0" prefWidth="904.0" style="-fx-background-color: #0067c1;">
+                           <children>
+                              <HBox layoutY="7.0" prefHeight="547.0" prefWidth="904.0" style="-fx-background-color: #0067c1;">
+                                 <children>
+                                    <VBox prefHeight="542.0" prefWidth="108.0">
+                                       <children>
+                                          <Button fx:id="refreshButton1" mnemonicParsing="false" onAction="#refresh_PATIENT" prefHeight="70.0" prefWidth="70.0" styleClass="refreshButton" stylesheets="@../css/Main.css">
+                                             <VBox.margin>
+                                                <Insets left="20.0" top="20.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="527.0" prefWidth="789.0">
+                                       <children>
+                                          <TableView fx:id="user_management_table1" prefHeight="475.0" prefWidth="792.0">
+                                             <columns>
+                                                <TableColumn fx:id="column_id1" editable="false" prefWidth="61.0" sortable="false" text="ID" />
+                                                <TableColumn fx:id="column_lastName1" prefWidth="184.0" text="LASTNAME" />
+                                                <TableColumn fx:id="column_name1" prefWidth="157.0" text="FIRSTNAME" />
+                                                <TableColumn fx:id="column_email1" editable="false" prefWidth="223.0" sortable="false" text="EMAIL" />
+                                                <TableColumn fx:id="column_role1" prefWidth="173.0" text="ROLE" />
+                                             </columns>
+                                             <VBox.margin>
+                                                <Insets right="10.0" />
+                                             </VBox.margin>
+                                          </TableView>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="789.0">
+                                             <children>
+                                                <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Results count:">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="countResultLabel1" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="85.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="2147465123">
+                                                   <HBox.margin>
+                                                      <Insets right="15.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="53.0" prefWidth="791.0">
+                                             <children>
+                                                <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="FIND BY:" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <ChoiceBox fx:id="columnSearchChoicebox1" prefWidth="150.0">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </ChoiceBox>
+                                                <Label layoutX="178.0" layoutY="21.0" style="-fx-text-fill: white; -fx-font-weight: bold;" text="TEXT OR NUMBER:">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="textSearchText1" prefHeight="25.0" prefWidth="269.0">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Button fx:id="searchButton1" mnemonicParsing="false" onAction="#search_PATIENT" prefHeight="25.0" prefWidth="115.0" text="Search">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                                <Button fx:id="clearButton1" mnemonicParsing="false" onAction="#clearResults_PATIENT" text="Clear" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="examinationManagementTab" closable="false" style="-fx-font-weight: bold;" text="Examination Management">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="555.0" prefWidth="904.0" style="-fx-background-color: #0067c1;">
+                           <children>
+                              <HBox layoutY="7.0" prefHeight="547.0" prefWidth="904.0" style="-fx-background-color: #0067c1;">
+                                 <children>
+                                    <VBox prefHeight="542.0" prefWidth="108.0">
+                                       <children>
+                                          <Button fx:id="refreshButton11" mnemonicParsing="false" onAction="#refresh_EXAMINATION" prefHeight="70.0" prefWidth="70.0" styleClass="refreshButton" stylesheets="@../css/Main.css">
+                                             <VBox.margin>
+                                                <Insets left="20.0" top="20.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="527.0" prefWidth="789.0">
+                                       <children>
+                                          <TableView fx:id="user_management_table11" prefHeight="475.0" prefWidth="792.0">
+                                             <columns>
+                                                <TableColumn fx:id="column_id11" editable="false" prefWidth="61.0" sortable="false" text="ID" />
+                                                <TableColumn fx:id="column_lastName11" prefWidth="184.0" text="LASTNAME" />
+                                                <TableColumn fx:id="column_name11" prefWidth="157.0" text="FIRSTNAME" />
+                                                <TableColumn fx:id="column_email11" editable="false" prefWidth="223.0" sortable="false" text="EMAIL" />
+                                                <TableColumn fx:id="column_role11" prefWidth="173.0" text="ROLE" />
+                                             </columns>
+                                             <VBox.margin>
+                                                <Insets right="10.0" />
+                                             </VBox.margin>
+                                          </TableView>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="789.0">
+                                             <children>
+                                                <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Results count:">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="countResultLabel11" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="85.0" style="-fx-font-weight: bold; -fx-text-fill: white;" text="2147465123">
+                                                   <HBox.margin>
+                                                      <Insets right="15.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="53.0" prefWidth="791.0">
+                                             <children>
+                                                <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="FIND BY:" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <ChoiceBox fx:id="columnSearchChoicebox11" prefWidth="150.0">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </ChoiceBox>
+                                                <Label layoutX="178.0" layoutY="21.0" style="-fx-text-fill: white; -fx-font-weight: bold;" text="TEXT OR NUMBER:">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="textSearchText11" prefHeight="25.0" prefWidth="269.0">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Button fx:id="searchButton11" mnemonicParsing="false" onAction="#search_EXAMINATION" prefHeight="25.0" prefWidth="115.0" text="Search">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                                <Button fx:id="clearButton11" mnemonicParsing="false" onAction="#clearResults_EXAMINATION" text="Clear" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
                     </tabs>
                 </TabPane>
             </children>

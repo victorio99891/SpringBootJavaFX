@@ -31,27 +31,27 @@ public class MainController {
     @FXML
     public Tab userManagementTab;
     @FXML
-    public TableColumn<UserBO, Long> column_id;
+    public TableColumn<UserBO, Long> column_id_USER;
     @FXML
-    public TableColumn<UserBO, String> column_lastName;
+    public TableColumn<UserBO, String> column_lastName_USER;
     @FXML
-    public TableColumn<UserBO, String> column_name;
+    public TableColumn<UserBO, String> column_firstName_USER;
     @FXML
-    public TableColumn<UserBO, String> column_email;
+    public TableColumn<UserBO, String> column_email_USER;
     @FXML
-    public TableColumn<UserBO, String> column_role;
+    public TableColumn<UserBO, String> column_role_USER;
     @FXML
-    public TableView<UserBO> user_management_table;
+    public TableView<UserBO> userManagementTable_USER;
     @FXML
-    public Label countResultLabel;
+    public Label countResultLabel_USER;
     @FXML
-    public ChoiceBox<String> columnSearchChoicebox;
+    public ChoiceBox<String> searchChoiceBox_USER;
     @FXML
-    public TextField textSearchText;
+    public TextField searchTextBox_USER;
     @FXML
-    public Button searchButton;
+    public Button searchButton_USER;
     @FXML
-    public Button clearButton;
+    public Button clearButton_USER;
 
 
     private final AppContext appContext;
@@ -73,6 +73,9 @@ public class MainController {
         this.userService = userService;
     }
 
+    @FXML
+    public void changePassword(ActionEvent actionEvent) {
+    }
 
     @FXML
     public void logout(ActionEvent actionEvent) {
@@ -100,12 +103,12 @@ public class MainController {
 
     private void fillSearchCheckList() {
         List<String> columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "EMAIL", "ROLE");
-        this.columnSearchChoicebox.setItems(FXCollections.observableArrayList(columnNames));
-        this.columnSearchChoicebox.setValue("ID");
+        this.searchChoiceBox_USER.setItems(FXCollections.observableArrayList(columnNames));
+        this.searchChoiceBox_USER.setValue("ID");
     }
 
     private void openUserEditWindow() {
-        this.user_management_table.setRowFactory(user -> {
+        this.userManagementTable_USER.setRowFactory(user -> {
             TableRow<UserBO> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
@@ -119,25 +122,25 @@ public class MainController {
     }
 
     public void fillUserManagementTable(List<UserBO> userBOList) {
-        column_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        column_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        column_name.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        column_email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        column_role.setCellValueFactory(new PropertyValueFactory<>("role"));
-        user_management_table.refresh();
-        user_management_table.setItems(FXCollections.observableArrayList(userBOList));
-        countResultLabel.setText(String.valueOf(userBOList.size()));
+        column_id_USER.setCellValueFactory(new PropertyValueFactory<>("id"));
+        column_lastName_USER.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        column_firstName_USER.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        column_email_USER.setCellValueFactory(new PropertyValueFactory<>("email"));
+        column_role_USER.setCellValueFactory(new PropertyValueFactory<>("role"));
+        userManagementTable_USER.refresh();
+        userManagementTable_USER.setItems(FXCollections.observableArrayList(userBOList));
+        countResultLabel_USER.setText(String.valueOf(userBOList.size()));
     }
 
-    public void search(ActionEvent actionEvent) {
+    public void search_USER(ActionEvent actionEvent) {
         List<UserBO> serachList;
-        if (!this.textSearchText.getText().isEmpty() && (this.textSearchText.getText() != null)) {
-            if (!this.columnSearchChoicebox.getValue().equals("ID")) {
-                serachList = userService.findByParameter(this.columnSearchChoicebox.getValue(), this.textSearchText.getText());
+        if (!this.searchTextBox_USER.getText().isEmpty() && (this.searchTextBox_USER.getText() != null)) {
+            if (!this.searchChoiceBox_USER.getValue().equals("ID")) {
+                serachList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
                 fillUserManagementTable(serachList);
             } else {
-                if (this.textSearchText.getText().matches("^[0-9]*$")) {
-                    serachList = userService.findByParameter(this.columnSearchChoicebox.getValue(), this.textSearchText.getText());
+                if (this.searchTextBox_USER.getText().matches("^[0-9]*$")) {
+                    serachList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
                     fillUserManagementTable(serachList);
                 } else {
                     ExceptionResolverService.resolve(ExceptionInfo.ID_SHOULD_BE_NUMBER);
@@ -147,15 +150,34 @@ public class MainController {
 
     }
 
-    public void clearResults(ActionEvent actionEvent) {
+    public void clearResults_USER(ActionEvent actionEvent) {
         fillUserManagementTable(this.userBOList);
-        this.textSearchText.setText("");
+        this.searchTextBox_USER.setText("");
     }
 
-    public void refresh(ActionEvent actionEvent) {
+    public void refresh_USER(ActionEvent actionEvent) {
         this.userBOList = userService.findAllUsers();
-        this.textSearchText.setText("");
-        this.columnSearchChoicebox.setValue("ID");
+        this.searchTextBox_USER.setText("");
+        this.searchChoiceBox_USER.setValue("ID");
         fillUserManagementTable(this.userBOList);
+    }
+
+
+    public void search_PATIENT(ActionEvent actionEvent) {
+    }
+
+    public void clearResults_PATIENT(ActionEvent actionEvent) {
+    }
+
+    public void refresh_EXAMINATION(ActionEvent actionEvent) {
+    }
+
+    public void search_EXAMINATION(ActionEvent actionEvent) {
+    }
+
+    public void clearResults_EXAMINATION(ActionEvent actionEvent) {
+    }
+
+    public void refresh_PATIENT(ActionEvent actionEvent) {
     }
 }
