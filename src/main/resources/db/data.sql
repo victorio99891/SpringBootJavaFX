@@ -1,6 +1,16 @@
 INSERT INTO ROLES (NAME)
 values ('ADMINISTRATOR'),
-       ('USER');
+       ('USER'),
+       ('DOCTOR'),
+       ('TECHNICIAN');
+
+INSERT INTO PATIENTS (FIRST_NAME, LAST_NAME, PESEL, IS_WOMAN)
+values ('Danuta', 'Pokorny', '93031667841', 1),
+       ('Marta', 'Bosko', '83101568266', 1),
+       ('Kazik', 'Kowalski', '60040918576', 0),
+       ('Krystyna', 'Nowacka', '88022641287', 1),
+       ('Joachim', 'Wroński', '95073126115', 0),
+       ('Jan', 'Ząbek', '72073035951', 0);
 
 
 INSERT INTO USERS (EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, ROLE_ID)
