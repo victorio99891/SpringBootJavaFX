@@ -1,7 +1,7 @@
 package pl.wiktor.management.cellfactory;
 
 import javafx.scene.control.TableCell;
-import pl.wiktor.management.model.RoleEnum;
+import pl.wiktor.management.model.enums.RoleEnum;
 import pl.wiktor.management.model.UserBO;
 
 /*

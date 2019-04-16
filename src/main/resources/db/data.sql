@@ -4,13 +4,25 @@ values ('ADMINISTRATOR'),
        ('DOCTOR'),
        ('TECHNICIAN');
 
-INSERT INTO PATIENTS (FIRST_NAME, LAST_NAME, PESEL, IS_WOMAN)
+INSERT INTO PATIENTS (FIRST_NAME, LAST_NAME, PESEL, IS_WOMEN)
 values ('Danuta', 'Pokorny', '93031667841', 1),
        ('Marta', 'Bosko', '83101568266', 1),
        ('Kazik', 'Kowalski', '60040918576', 0),
        ('Krystyna', 'Nowacka', '88022641287', 1),
        ('Joachim', 'Wroński', '95073126115', 0),
        ('Jan', 'Ząbek', '72073035951', 0);
+
+INSERT INTO IMAGING_TECHNIQUES (NAME)
+values ('CT'),
+       ('MRI'),
+       ('USG');
+
+INSERT INTO EXAMINATIONS (IMG_TECH_ID, PATIENT_ID, STATUS)
+values (1, 3, 'REGISTERED'),
+       (2, 1, 'REQUESTED'),
+       (3, 2, 'IN_PROGRESS'),
+       (1, 4, 'FOR_DESCRIPTION'),
+       (1, 6, 'DONE');
 
 
 INSERT INTO USERS (EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, ROLE_ID)

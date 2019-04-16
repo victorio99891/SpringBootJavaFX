@@ -3,10 +3,10 @@ package pl.wiktor.management.model;
 import lombok.Data;
 
 @Data
-public class UserBO {
+public class PatientBO {
     private Long id;
-    private String email;
     private String firstName;
     private String lastName;
-    private String role;
+    private String PESEL;
+    private boolean women;
 }

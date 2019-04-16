@@ -91,7 +91,7 @@ public class MainController {
         this.authenticatedUserLabel.setText(this.appContext.getAuthenticatedUser().getLastName()
                 + " "
                 + this.appContext.getAuthenticatedUser().getFirstName()
-                + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]");
+                + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]" + " [" + this.appContext.getAuthenticatedUser().getRole() + "]");
         userBOList = userService.findAllUsers();
         fillUserManagementTable(userBOList);
         fillSearchCheckList();

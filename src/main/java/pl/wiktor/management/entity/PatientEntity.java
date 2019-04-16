@@ -11,7 +11,7 @@ public class PatientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID", nullable = false, unique = true)
+    @Column(name = "PATIENT_ID", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "FIRST_NAME", nullable = false)
@@ -24,7 +24,7 @@ public class PatientEntity {
     private String PESEL;
 
     @Column(name = "IS_WOMEN", nullable = false)
-    private boolean isWoman;
+    private boolean women;
 
 
 }

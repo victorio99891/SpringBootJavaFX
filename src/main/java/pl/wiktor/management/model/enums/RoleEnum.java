@@ -1,4 +1,4 @@
-package pl.wiktor.management.model;
+package pl.wiktor.management.model.enums;
 
 public enum RoleEnum {
     /* DEFAULT ROLE WITHOUT ANY PRIVILEGES AND VIEWS */

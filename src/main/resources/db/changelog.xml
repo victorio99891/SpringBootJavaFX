@@ -48,14 +48,49 @@
             <column name="PESEL" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="IS_WOMAN" type="BIT">
-                <constraints nullable="false" />
+            <column name="IS_WOMEN" type="BIT">
+                <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createTable tableName="IMAGING_TECHNIQUES">
+            <column name="IMG_TECH_ID" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="EXAMINATIONS">
+            <column name="EXAMINATION_ID" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMG_TECH_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PATIENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
 
         <addForeignKeyConstraint baseTableName="USERS" baseColumnNames="ROLE_ID" constraintName="USERS_ROLE_FK"
                                  referencedTableName="ROLES"
                                  referencedColumnNames="ROLE_ID"/>
+
+        <addForeignKeyConstraint baseTableName="EXAMINATIONS" baseColumnNames="IMG_TECH_ID"
+                                 constraintName="EXAMINATIONS_IMG_TECH_ID_FK"
+                                 referencedTableName="IMAGING_TECHNIQUES"
+                                 referencedColumnNames="IMG_TECH_ID"/>
+
+        <addForeignKeyConstraint baseTableName="EXAMINATIONS" baseColumnNames="PATIENT_ID"
+                                 constraintName="EXAMINATIONS_PATIENT_ID_FK"
+                                 referencedTableName="PATIENTS"
+                                 referencedColumnNames="PATIENT_ID"/>
 
         <sqlFile dbms="h2"
                  encoding="utf8"
