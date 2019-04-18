@@ -21,7 +21,7 @@ public class PatientEntity {
     private String lastName;
 
     @Column(name = "PESEL", nullable = false, unique = true)
-    private String PESEL;
+    private String pesel;
 
     @Column(name = "IS_WOMEN", nullable = false)
     private boolean women;

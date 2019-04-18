@@ -77,7 +77,6 @@ public class UserEditController {
         this.userToEdit.setFirstName(this.firstNameLabel.getText());
         this.firstNameLabel.setEditable(false);
         this.firstNameLabel.setStyle("-fx-background-color: #f6ff0e");
-
         this.userToEdit.setLastName(this.lastNameLabel.getText());
         this.lastNameLabel.setEditable(false);
         this.lastNameLabel.setStyle("-fx-background-color: #f6ff0e");

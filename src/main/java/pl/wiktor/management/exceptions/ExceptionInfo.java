@@ -33,6 +33,17 @@ public enum ExceptionInfo {
         public String getMessage() {
             return "ID should be an integer number.";
         }
+    },
+    GENDER_SHOULD_BE_MALE_OR_FEMALE {
+        @Override
+        public String getTitle() {
+            return "[GENDER SHOULD HAVE PROPER VALUES]";
+        }
+
+        @Override
+        public String getMessage() {
+            return "GENDER can be only MALE or FEMALE value.";
+        }
     };
 
 

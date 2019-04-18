@@ -3,3 +3,7 @@
     -fx-background-repeat: stretch;
     -fx-background-size: 70 70;
 }
+
+.selectedTab:selected {
+    -fx-background-color: orange;
+}

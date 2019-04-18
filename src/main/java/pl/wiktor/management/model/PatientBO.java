@@ -7,6 +7,6 @@ public class PatientBO {
     private Long id;
     private String firstName;
     private String lastName;
-    private String PESEL;
+    private String pesel;
     private boolean women;
 }

@@ -1,6 +1,8 @@
 package pl.wiktor.management.cellfactory;
 
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.util.Callback;
 import pl.wiktor.management.model.enums.RoleEnum;
 import pl.wiktor.management.model.UserBO;
 
@@ -29,4 +31,6 @@ public class CustomTableCell extends TableCell<UserBO, String> {
         }
 
     }
+
+
 }
