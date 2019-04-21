@@ -55,11 +55,6 @@ public class NewPatientController {
         this.mainController = mainController;
     }
 
-    /*TODO:
-    Validate patient EXIST by PESEL
-    Validate PESEL (by GENDER)
-    Refresh patientListOnChange
-         */
     public void register(ActionEvent event) {
         System.out.println(newPatient);
         if (!patientService.checkIfPatientExist(newPatient.getPesel())) {

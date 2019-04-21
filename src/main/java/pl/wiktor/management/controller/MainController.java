@@ -89,6 +89,20 @@ public class MainController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
     private final PatientService patientService;
+    public Tab examinationManagementTab;
+    public Button refreshButton_EXAMINATION;
+    public TableView patientManagementTable_EXAMINATION;
+    public TableColumn column_id_EXAMINATION;
+    public TableColumn column_lastName_EXAMINATION;
+    public TableColumn column_firstName_EXAMINATION;
+    public TableColumn column_PESEL_EXAMINATION;
+    public TableColumn column_examination_EXAMINATION;
+    public TableColumn column_status_EXAMINATION;
+    public Label countResultLabel_EXAMINATION;
+    public ChoiceBox searchChoiceBox_EXAMINATION;
+    public TextField searchTextBox_EXAMINATION;
+    public Button searchButton_EXAMINATION;
+    public Button clearButton_EXAMINATION;
 
     List<UserBO> userBOList;
     List<PatientBO> patientBOList;
@@ -275,5 +289,14 @@ public class MainController {
 
     public void createPatient_PATIENT(ActionEvent actionEvent) {
         stageManager.showScene(FxmlView.REGISTER_PATIENT);
+    }
+
+    public void refresh_EXAMINATION(ActionEvent event) {
+    }
+
+    public void search_EXAMINATION(ActionEvent event) {
+    }
+
+    public void clearResults_EXAMINATION(ActionEvent event) {
     }
 }
