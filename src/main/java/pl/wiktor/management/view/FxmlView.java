@@ -52,6 +52,28 @@ public enum FxmlView {
             return "/fxml/CreateNewUserWindow.fxml";
         }
 
+    },
+    CHANGE_PASSWORD{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("change_password.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ChangePasswordWindow.fxml";
+        }
+    },
+    REGISTER_PATIENT {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("patient_register.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/RegisterNewPatientWindow.fxml";
+        }
     };
 
     public abstract String getTitle();

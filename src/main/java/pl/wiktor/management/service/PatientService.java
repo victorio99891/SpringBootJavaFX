@@ -49,4 +49,12 @@ public class PatientService {
 
         return new ArrayList<>();
     }
+
+    public boolean checkIfPatientExist(String pesel) {
+        return patientRepository.existsByPesel(pesel);
+    }
+
+    public void savePatient(PatientBO patientBO) {
+        patientRepository.save(patientMapper.fromBOToEntity(patientBO));
+    }
 }

@@ -44,6 +44,16 @@ public enum ExceptionInfo {
         public String getMessage() {
             return "GENDER can be only MALE or FEMALE value.";
         }
+    }, PATIENT_EXIST {
+        @Override
+        public String getTitle() {
+            return "[PATIENT WITH PESEL EXIST]";
+        }
+
+        @Override
+        public String getMessage() {
+            return "Patient with this PESEL currently exist in database.";
+        }
     };
 
 

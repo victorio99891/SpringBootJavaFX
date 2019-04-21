@@ -88,4 +88,12 @@ public class UserService {
 
         return new ArrayList<>();
     }
+
+    public void changePassword(UserBO userBO, String password) {
+        UserEntity userEntity = userRepository.findByEmail(userBO.getEmail()).get();
+        RoleEntity roleEntity = roleRepository.findByName(userBO.getRole()).get();
+        userEntity.setPassword(passwordEncoder.encode(password));
+        userEntity.setRole(roleEntity);
+        userRepository.save(userEntity);
+    }
 }

@@ -109,6 +109,7 @@ public class MainController {
 
     @FXML
     public void changePassword(ActionEvent actionEvent) {
+        stageManager.showScene(FxmlView.CHANGE_PASSWORD);
     }
 
     @FXML
@@ -185,7 +186,8 @@ public class MainController {
         patientManagementTable_PATIENT.setItems(FXCollections.observableArrayList(patientBOList));
         countResultLabel_PATIENT.setText(String.valueOf(patientBOList.size()));
     }
-@FXML
+
+    @FXML
     public void search_USER() {
         List<UserBO> serachList;
         if (!this.searchTextBox_USER.getText().isEmpty() && (this.searchTextBox_USER.getText() != null)) {
@@ -217,7 +219,7 @@ public class MainController {
         });
     }
 
-@FXML
+    @FXML
     public void clearResults_USER(ActionEvent actionEvent) {
         fillUserManagementTable(this.userBOList);
         this.searchTextBox_USER.setText("");
@@ -231,7 +233,7 @@ public class MainController {
         fillUserManagementTable(this.userBOList);
     }
 
-@FXML
+    @FXML
     public void search_PATIENT() {
         List<PatientBO> searchList;
         if (!this.searchTextBox_PATIENT.getText().isEmpty() && (this.searchTextBox_PATIENT.getText() != null)) {
@@ -270,16 +272,8 @@ public class MainController {
         this.searchTextBox_PATIENT.setText("");
     }
 
-    public void refresh_EXAMINATION(ActionEvent actionEvent) {
-    }
-
-    public void search_EXAMINATION(ActionEvent actionEvent) {
-    }
-
-    public void clearResults_EXAMINATION(ActionEvent actionEvent) {
-    }
-
 
     public void createPatient_PATIENT(ActionEvent actionEvent) {
+        stageManager.showScene(FxmlView.REGISTER_PATIENT);
     }
 }

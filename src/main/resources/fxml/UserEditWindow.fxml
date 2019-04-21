@@ -13,11 +13,7 @@
    <children>
       <VBox prefHeight="276.0" prefWidth="386.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="36.0" prefWidth="386.0">
-               <children>
-                  <Label fx:id="userLabel" alignment="CENTER" prefHeight="17.0" prefWidth="353.0" text="AAAAAAAAAA" />
-               </children>
-            </HBox>
+            <HBox alignment="CENTER" prefHeight="36.0" prefWidth="386.0" />
             <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="386.0">
                <children>
                   <Label text="Name:">

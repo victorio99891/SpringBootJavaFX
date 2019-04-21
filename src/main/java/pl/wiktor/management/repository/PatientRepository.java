@@ -16,4 +16,5 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
 
     List<PatientEntity> findByWomen(Boolean isWoman);
 
+    boolean existsByPesel(String pesel);
 }

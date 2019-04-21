@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
@@ -24,8 +23,6 @@ public class UserEditController {
 
     @FXML
     public AnchorPane window;
-    @FXML
-    public Label userLabel;
     @FXML
     public TextField firstNameLabel;
     @FXML
@@ -63,7 +60,6 @@ public class UserEditController {
         List<String> roleStringList = this.appContext.getRoleBOList().stream().map(RoleBO::getName).collect(Collectors.toList());
         this.roleMenu.setItems(FXCollections.observableArrayList(roleStringList));
         this.roleMenu.setValue(userToEdit.getRole());
-        this.userLabel.setText(userToEdit.toString());
         this.firstNameLabel.setText(userToEdit.getFirstName());
         this.lastNameLabel.setText(userToEdit.getLastName());
         this.emailLabel.setText(userToEdit.getEmail());
@@ -74,19 +70,23 @@ public class UserEditController {
     @FXML
     public void submit(ActionEvent actionEvent) {
 
-        this.userToEdit.setFirstName(this.firstNameLabel.getText());
-        this.firstNameLabel.setEditable(false);
-        this.firstNameLabel.setStyle("-fx-background-color: #f6ff0e");
-        this.userToEdit.setLastName(this.lastNameLabel.getText());
-        this.lastNameLabel.setEditable(false);
-        this.lastNameLabel.setStyle("-fx-background-color: #f6ff0e");
-        this.emailLabel.setEditable(false);
-        this.emailLabel.setStyle("-fx-background-color: #f6ff0e");
-        this.userToEdit.setRole(this.roleMenu.getValue());
-        this.roleMenu.setDisable(true);
-        this.roleMenu.setStyle("-fx-background-color: #f6ff0e");
-        this.submitButton.setDisable(true);
-        this.saveButton.setDisable(false);
+        if (this.firstNameLabel.getText().length() >= 2 && this.lastNameLabel.getText().length() >= 2) {
+            this.userToEdit.setFirstName(this.firstNameLabel.getText().substring(0, 1).toUpperCase() +
+                    this.firstNameLabel.getText().substring(1).toLowerCase());
+            this.firstNameLabel.setEditable(false);
+            this.firstNameLabel.setStyle("-fx-background-color: #f6ff0e");
+            this.userToEdit.setLastName(this.lastNameLabel.getText().substring(0, 1).toUpperCase() +
+                    this.lastNameLabel.getText().substring(1).toLowerCase());
+            this.lastNameLabel.setEditable(false);
+            this.lastNameLabel.setStyle("-fx-background-color: #f6ff0e");
+            this.emailLabel.setEditable(false);
+            this.emailLabel.setStyle("-fx-background-color: #f6ff0e");
+            this.userToEdit.setRole(this.roleMenu.getValue());
+            this.roleMenu.setDisable(true);
+            this.roleMenu.setStyle("-fx-background-color: #f6ff0e");
+            this.submitButton.setDisable(true);
+            this.saveButton.setDisable(false);
+        }
 
     }
 

@@ -31,9 +31,8 @@ public class LoginController {
     private final AuthenticationService authenticationService;
     private final ExceptionResolverService exceptionResolverService;
 
-    public LoginController(@Lazy StageManager stageManager,
-                           AuthenticationService authenticationService,
-                           ExceptionResolverService exceptionResolverService) {
+    public LoginController(@Lazy StageManager stageManager, AuthenticationService authenticationService,
+            ExceptionResolverService exceptionResolverService) {
         this.stageManager = stageManager;
         this.authenticationService = authenticationService;
         this.exceptionResolverService = exceptionResolverService;
@@ -45,7 +44,6 @@ public class LoginController {
             login();
         }
     }
-
 
     @FXML
     public void login() {
