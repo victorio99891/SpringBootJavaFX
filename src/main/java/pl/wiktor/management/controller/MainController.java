@@ -1,5 +1,7 @@
 package pl.wiktor.management.controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,14 +12,13 @@ import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.cellfactory.CustomGenderCell;
+import pl.wiktor.management.cellfactory.CustomStatusCell;
 import pl.wiktor.management.exceptions.ExceptionInfo;
 import pl.wiktor.management.exceptions.ExceptionResolverService;
+import pl.wiktor.management.model.ExaminationBO;
 import pl.wiktor.management.model.PatientBO;
 import pl.wiktor.management.model.UserBO;
-import pl.wiktor.management.service.AppContext;
-import pl.wiktor.management.service.AuthenticationService;
-import pl.wiktor.management.service.PatientService;
-import pl.wiktor.management.service.UserService;
+import pl.wiktor.management.service.*;
 import pl.wiktor.management.utils.StageManager;
 import pl.wiktor.management.view.FxmlView;
 
@@ -89,15 +90,16 @@ public class MainController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
     private final PatientService patientService;
+    private final ExaminationService examinationService;
     public Tab examinationManagementTab;
     public Button refreshButton_EXAMINATION;
-    public TableView patientManagementTable_EXAMINATION;
-    public TableColumn column_id_EXAMINATION;
-    public TableColumn column_lastName_EXAMINATION;
-    public TableColumn column_firstName_EXAMINATION;
-    public TableColumn column_PESEL_EXAMINATION;
-    public TableColumn column_examination_EXAMINATION;
-    public TableColumn column_status_EXAMINATION;
+    public TableView<ExaminationBO> examinationManagementTable_EXAMINATION;
+    public TableColumn<ExaminationBO, Long> column_id_EXAMINATION;
+    public TableColumn<ExaminationBO, String> column_lastName_EXAMINATION;
+    public TableColumn<ExaminationBO, String> column_firstName_EXAMINATION;
+    public TableColumn<ExaminationBO, String> column_PESEL_EXAMINATION;
+    public TableColumn<ExaminationBO, String> column_examination_EXAMINATION;
+    public TableColumn<ExaminationBO, String> column_status_EXAMINATION;
     public Label countResultLabel_EXAMINATION;
     public ChoiceBox searchChoiceBox_EXAMINATION;
     public TextField searchTextBox_EXAMINATION;
@@ -106,19 +108,22 @@ public class MainController {
 
     List<UserBO> userBOList;
     List<PatientBO> patientBOList;
+    List<ExaminationBO> examinationBOList;
 
 
     public MainController(@Lazy StageManager stageManager,
                           AppContext appContext,
                           AuthenticationService authenticationService,
                           UserService userService,
-                          PatientService patientService
+                          PatientService patientService,
+                          ExaminationService examinationService
     ) {
         this.stageManager = stageManager;
         this.appContext = appContext;
         this.authenticationService = authenticationService;
         this.userService = userService;
         this.patientService = patientService;
+        this.examinationService = examinationService;
     }
 
     @FXML
@@ -146,8 +151,10 @@ public class MainController {
                 + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]" + " [" + this.appContext.getAuthenticatedUser().getRole() + "]");
         userBOList = userService.findAllUsers();
         patientBOList = patientService.findAllPatients();
+        examinationBOList = examinationService.findAllExaminations();
         fillUserManagementTable(userBOList);
         fillPatientManagementTable(patientBOList);
+        fillExaminationTable(examinationBOList);
         fillSearchCheckList();
         openUserEditWindow();
         addEventHandlers();
@@ -199,6 +206,35 @@ public class MainController {
         patientManagementTable_PATIENT.refresh();
         patientManagementTable_PATIENT.setItems(FXCollections.observableArrayList(patientBOList));
         countResultLabel_PATIENT.setText(String.valueOf(patientBOList.size()));
+    }
+
+    void fillExaminationTable(List<ExaminationBO> examinationBOList) {
+        column_id_EXAMINATION.setCellValueFactory(new PropertyValueFactory<>("id"));
+        column_lastName_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getPatientBO().getLastName()));
+            return sp;
+        });
+        column_firstName_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getPatientBO().getFirstName()));
+            return sp;
+        });
+        column_PESEL_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getPatientBO().getPesel()));
+            return sp;
+        });
+        column_examination_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getImgTechBO().getName()));
+            return sp;
+        });
+        column_status_EXAMINATION.setCellFactory(CustomStatusCell.cellFactory);
+        column_status_EXAMINATION.setCellValueFactory(new PropertyValueFactory<>("status"));
+        examinationManagementTable_EXAMINATION.refresh();
+        examinationManagementTable_EXAMINATION.setItems(FXCollections.observableArrayList(examinationBOList));
+        countResultLabel_EXAMINATION.setText(String.valueOf(examinationBOList.size()));
     }
 
     @FXML

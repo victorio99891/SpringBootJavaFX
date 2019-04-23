@@ -20,8 +20,8 @@ values ('CT'),
 INSERT INTO EXAMINATIONS (IMG_TECH_ID, PATIENT_ID, STATUS)
 values (1, 3, 'REGISTERED'),
        (2, 1, 'REQUESTED'),
-       (3, 2, 'IN_PROGRESS'),
-       (1, 4, 'FOR_DESCRIPTION'),
+       (3, 2, 'IN PROGRESS'),
+       (1, 4, 'FOR DESCRIPTION'),
        (1, 6, 'DONE');
 
 

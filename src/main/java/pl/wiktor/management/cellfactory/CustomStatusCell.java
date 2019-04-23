@@ -14,23 +14,23 @@ public class CustomStatusCell extends TableCell<ExaminationBO, String> {
             setText(null);
         } else {
             if (item.equals(ExaminationStatusEnum.REGISTERED.getDisplayName())) {
-                setStyle("-fx-background-color: #c9ff57; -fx-text-fill: black");
+                setStyle("-fx-background-color: #c9ff57; -fx-text-fill: black; -fx-font-weight: bold; -fx-alignment: CENTER");
                 setText(ExaminationStatusEnum.REGISTERED.getDisplayName());
 
             } else if (item.equals(ExaminationStatusEnum.REQUESTED.getDisplayName())) {
-                setStyle("-fx-background-color: #25ff3f; -fx-text-fill: black");
+                setStyle("-fx-background-color: #25ff3f; -fx-text-fill: black; -fx-font-weight: bold; -fx-alignment: CENTER");
                 setText(ExaminationStatusEnum.REQUESTED.getDisplayName());
 
             } else if (item.equals(ExaminationStatusEnum.IN_PROGRESS.getDisplayName())) {
-                setStyle("-fx-background-color: #004a00; -fx-text-fill: white");
+                setStyle("-fx-background-color: #004a00; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: CENTER");
                 setText(ExaminationStatusEnum.IN_PROGRESS.getDisplayName());
 
             } else if (item.equals(ExaminationStatusEnum.FOR_DESCRIPTION.getDisplayName())) {
-                setStyle("-fx-background-color: #ff8ee4; -fx-text-fill: black");
+                setStyle("-fx-background-color: #ff8ee4; -fx-text-fill: black; -fx-font-weight: bold; -fx-alignment: CENTER");
                 setText(ExaminationStatusEnum.FOR_DESCRIPTION.getDisplayName());
 
             } else if (item.equals(ExaminationStatusEnum.DONE.getDisplayName())) {
-                setStyle("-fx-background-color: #ff0200; -fx-text-fill: white");
+                setStyle("-fx-background-color: #ff0200; -fx-text-fill: white; -fx-font-weight: bold; -fx-alignment: CENTER");
                 setText(ExaminationStatusEnum.DONE.getDisplayName());
             }
         }
