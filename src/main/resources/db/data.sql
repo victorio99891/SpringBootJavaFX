@@ -13,7 +13,8 @@ values ('Danuta', 'Pokorny', '93031667841', 1),
        ('Jan', 'Ząbek', '72073035951', 0);
 
 INSERT INTO IMAGING_TECHNIQUES (NAME)
-values ('CT'),
+values ('RTG'),
+       ('CT'),
        ('MRI'),
        ('USG');
 

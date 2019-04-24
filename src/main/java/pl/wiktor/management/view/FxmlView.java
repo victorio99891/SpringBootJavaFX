@@ -74,6 +74,17 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/RegisterNewPatientWindow.fxml";
         }
+    },
+    REGISTER_EXAMINATION{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("examination_register.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/RegisterExaminationWindow.fxml";
+        }
     };
 
     public abstract String getTitle();

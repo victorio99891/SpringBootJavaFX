@@ -93,7 +93,7 @@ public class UserEditController {
     @FXML
     public void save(ActionEvent actionEvent) {
         userService.updateUserData(this.userToEdit);
-        mainController.fillUserManagementTable(mainController.userBOList);
+        mainController.fillUserManagementTable(userService.findAllUsers());
         stageManager.closeStageOnEvent(actionEvent);
     }
 }

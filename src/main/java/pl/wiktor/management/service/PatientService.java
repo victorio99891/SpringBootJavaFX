@@ -57,4 +57,8 @@ public class PatientService {
     public void savePatient(PatientBO patientBO) {
         patientRepository.save(patientMapper.fromBOToEntity(patientBO));
     }
+
+    public PatientBO findByPesel(String pesel) {
+        return patientMapper.fromEntityToBO(patientRepository.findByPesel(pesel).get());
+    }
 }

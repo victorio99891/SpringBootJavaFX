@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -15,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="921.0" style="-fx-background-color: #d9d9db;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="921.0" style="-fx-background-color: #d9d9db;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
     <children>
         <VBox prefHeight="614.0" prefWidth="921.0">
             <children>
@@ -74,6 +80,14 @@
                                              <VBox.margin>
                                                 <Insets right="10.0" />
                                              </VBox.margin>
+                                             <contextMenu>
+                                                <ContextMenu fx:id="contextMenu_USER">
+                                                  <items>
+                                                      <MenuItem mnemonicParsing="false" onAction="#editSelectedContextMenu_USER" text="EDIT USER" />
+                                                    <MenuItem mnemonicParsing="false" onAction="#deleteSelectedContextMenu_USER" text="DELETE USER" />
+                                                  </items>
+                                                </ContextMenu>
+                                             </contextMenu>
                                                         </TableView>
                                           <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="789.0">
                                              <children>
@@ -166,6 +180,13 @@
                                              <VBox.margin>
                                                 <Insets right="10.0" />
                                              </VBox.margin>
+                                             <contextMenu>
+                                                <ContextMenu fx:id="contextMenu_PATIENT">
+                                                  <items>
+                                                    <MenuItem mnemonicParsing="false" onAction="#editSelectedContextMenu_PATIENT" text="EDIT PATIENT" />
+                                                  </items>
+                                                </ContextMenu>
+                                             </contextMenu>
                                           </TableView>
                                           <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="789.0">
                                              <children>
@@ -244,8 +265,8 @@
                                                 <TableColumn fx:id="column_id_EXAMINATION" editable="false" prefWidth="47.0" sortable="false" text="ID" />
                                                 <TableColumn fx:id="column_lastName_EXAMINATION" prefWidth="176.0" text="PATIENT LASTNAME" />
                                                 <TableColumn fx:id="column_firstName_EXAMINATION" prefWidth="181.0" text="PATIENT FIRSTNAME" />
-                                                <TableColumn fx:id="column_PESEL_EXAMINATION" editable="false" prefWidth="167.0" sortable="false" text="PESEL" />
-                                                <TableColumn fx:id="column_examination_EXAMINATION" prefWidth="103.0" text="EXAMINATION" />
+                                                <TableColumn fx:id="column_PESEL_EXAMINATION" editable="false" prefWidth="140.0" sortable="false" text="PESEL" />
+                                                <TableColumn fx:id="column_examination_EXAMINATION" prefWidth="130.0" text="EXAMINATION" />
                                                 <TableColumn fx:id="column_status_EXAMINATION" prefWidth="131.0" text="STATUS" />
                                              </columns>
                                              <VBox.margin>

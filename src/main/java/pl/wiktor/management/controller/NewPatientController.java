@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import pl.wiktor.management.exceptions.ExceptionInfo;
 import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.model.PatientBO;
+import pl.wiktor.management.service.AppContext;
 import pl.wiktor.management.service.PatientService;
 import pl.wiktor.management.utils.StageManager;
 
@@ -45,24 +46,33 @@ public class NewPatientController {
 
     private PatientBO newPatient = new PatientBO();
 
+    private final AppContext appContext;
     private final PatientService patientService;
     private final StageManager stageManager;
     private final MainController mainController;
 
-    public NewPatientController(@Lazy StageManager stageManager, PatientService patientService, MainController mainController) {
+    public NewPatientController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController) {
         this.patientService = patientService;
+        this.appContext = appContext;
         this.stageManager = stageManager;
         this.mainController = mainController;
     }
 
     public void register(ActionEvent event) {
-        System.out.println(newPatient);
-        if (!patientService.checkIfPatientExist(newPatient.getPesel())) {
+        if (!this.appContext.isPatientToEditAction()) {
+            if (!patientService.checkIfPatientExist(newPatient.getPesel())) {
+                patientService.savePatient(newPatient);
+                mainController.fillPatientManagementTable(patientService.findAllPatients());
+                stageManager.closeStageOnEvent(event);
+            } else {
+                ExceptionResolverService.resolve(ExceptionInfo.PATIENT_EXIST);
+            }
+        } else {
             patientService.savePatient(newPatient);
             mainController.fillPatientManagementTable(patientService.findAllPatients());
+            appContext.setPatientToEditAction(false);
             stageManager.closeStageOnEvent(event);
-        } else {
-            ExceptionResolverService.resolve(ExceptionInfo.PATIENT_EXIST);
+            newPatient = new PatientBO();
         }
     }
 
@@ -145,6 +155,16 @@ public class NewPatientController {
         this.genderChoiceBox.setItems(FXCollections.observableArrayList(genderMap.keySet()));
         this.genderChoiceBox.setValue("MALE");
         this.genderChoiceBox.getSelectionModel().selectedItemProperty().addListener(changeListener);
+
+        if (this.appContext.isPatientToEditAction()) {
+            PatientBO patientBO = this.appContext.getPatientToEdit();
+            this.newPatient = patientService.findByPesel(patientBO.getPesel());
+            this.firstNameLabel.setText(patientBO.getFirstName());
+            this.lastNameLabel.setText(patientBO.getLastName());
+            this.peselLabel.setText(patientBO.getPesel());
+            this.genderChoiceBox.setValue(patientBO.isWomen() ? "FEMALE" : "MALE");
+            validatePatientData();
+        }
 
     }
 

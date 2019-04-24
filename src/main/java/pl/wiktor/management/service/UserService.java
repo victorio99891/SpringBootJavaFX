@@ -7,8 +7,8 @@ import pl.wiktor.management.entity.UserEntity;
 import pl.wiktor.management.exceptions.ExceptionInfo;
 import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.mapper.UserMapper;
-import pl.wiktor.management.model.enums.RoleEnum;
 import pl.wiktor.management.model.UserBO;
+import pl.wiktor.management.model.enums.RoleEnum;
 import pl.wiktor.management.repository.RoleRepository;
 import pl.wiktor.management.repository.UserRepository;
 
@@ -95,5 +95,9 @@ public class UserService {
         userEntity.setPassword(passwordEncoder.encode(password));
         userEntity.setRole(roleEntity);
         userRepository.save(userEntity);
+    }
+
+    public void deleteUser(UserBO userBO) {
+        userRepository.delete(userRepository.findByEmail(userBO.getEmail()).get());
     }
 }

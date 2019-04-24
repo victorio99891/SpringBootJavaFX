@@ -52,8 +52,10 @@ public class NewUserController {
 
     public void register(ActionEvent actionEvent) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setFirstName(this.firstNameLabel.getText());
-        userEntity.setLastName(this.lastNameLabel.getText());
+        String tmp = this.firstNameLabel.getText().substring(0,1).toUpperCase()+this.firstNameLabel.getText().substring(1);
+        userEntity.setFirstName(tmp);
+        tmp = this.lastNameLabel.getText().substring(0,1).toUpperCase()+this.lastNameLabel.getText().substring(1);
+        userEntity.setLastName(tmp);
         userEntity.setEmail(this.emailLabel.getText());
         userEntity.setPassword(this.passwordLabel.getText());
         boolean isUserCreated = userService.checkNewUserCredentials(userEntity);
