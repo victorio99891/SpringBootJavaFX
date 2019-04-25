@@ -54,8 +54,17 @@ public enum ExceptionInfo {
         public String getMessage() {
             return "Patient with this PESEL currently exist in database.";
         }
-    };
+    }, CANNOT_DELETE_PATIENT {
+        @Override
+        public String getTitle() {
+            return "[PATIENT ASSIGNED TO EXAMINATION]";
+        }
 
+        @Override
+        public String getMessage() {
+            return "Patient cannot be deleted, because assigned to examination. Delete all patient examinations before deleting patient.";
+        }
+    };
 
     public abstract String getTitle();
 

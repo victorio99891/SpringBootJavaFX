@@ -6,9 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.slf4j.Logger;
+import pl.wiktor.management.controller.MainController;
 import pl.wiktor.management.view.FxmlView;
 
 import java.io.IOException;
@@ -80,6 +82,7 @@ public class StageManager {
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
+        primaryStage.getIcons().add(new Image(MainController.class.getResourceAsStream("/icon/icon.png")));
 
         try {
             primaryStage.show();

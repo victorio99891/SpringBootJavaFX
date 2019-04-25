@@ -50,13 +50,26 @@ public class ExaminationService {
     }
 
     public List<ExaminationBO> findByParameter(String parameter, String searchValue) {
-        List<ExaminationBO> examinationBOList;
         Optional<ExaminationEntity> examinationEntity;
         if (parameter.equals("ID")) {
             examinationEntity = examinationRepository.findById(Long.valueOf(searchValue));
             return examinationEntity.map(examination -> Collections.singletonList(examinationMapper.fromEntityToBO(examination))).orElse(Collections.emptyList());
+        } else if (parameter.equals("FIRSTNAME")) {
+            return examinationRepository.findByPatientEntity_FirstNameContainingIgnoringCase(searchValue).stream().map(examinationMapper::fromEntityToBO).collect(Collectors.toList());
+        } else if (parameter.equals("LASTNAME")) {
+            return examinationRepository.findByPatientEntity_LastNameContainingIgnoringCase(searchValue).stream().map(examinationMapper::fromEntityToBO).collect(Collectors.toList());
+        } else if (parameter.equals("PESEL")) {
+            return examinationRepository.findByPatientEntity_PeselContainingIgnoringCase(searchValue).stream().map(examinationMapper::fromEntityToBO).collect(Collectors.toList());
+        } else if (parameter.equals("EXAMINATION")) {
+            return examinationRepository.findByImagingTechniqueEntity_NameContainingIgnoringCase(searchValue).stream().map(examinationMapper::fromEntityToBO).collect(Collectors.toList());
+        } else if (parameter.equals("STATUS")) {
+            return examinationRepository.findByStatusContainingIgnoringCase(searchValue).stream().map(examinationMapper::fromEntityToBO).collect(Collectors.toList());
         }
 
         return new ArrayList<>();
+    }
+
+    public void deletePatient(ExaminationBO examinationBO) {
+        examinationRepository.delete(examinationRepository.findById(examinationBO.getId()).get());
     }
 }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="614.0" minWidth="921.0" prefHeight="614.0" prefWidth="921.0" style="-fx-background-color: #d9d9db;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="614.0" minWidth="921.0" prefHeight="614.0" prefWidth="921.0" style="-fx-background-color: #d9d9db;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
     <children>
         <VBox prefHeight="614.0" prefWidth="921.0">
             <children>
@@ -80,6 +86,7 @@
                                                 <ContextMenu fx:id="contextMenu_USER">
                                                   <items>
                                                       <MenuItem mnemonicParsing="false" onAction="#editSelectedContextMenu_USER" text="EDIT USER" />
+                                                      <SeparatorMenuItem mnemonicParsing="false" />
                                                     <MenuItem mnemonicParsing="false" onAction="#deleteSelectedContextMenu_USER" text="DELETE USER" />
                                                   </items>
                                                 </ContextMenu>
@@ -180,6 +187,8 @@
                                                 <ContextMenu fx:id="contextMenu_PATIENT">
                                                   <items>
                                                     <MenuItem mnemonicParsing="false" onAction="#editSelectedContextMenu_PATIENT" text="EDIT PATIENT" />
+                                                      <SeparatorMenuItem mnemonicParsing="false" />
+                                                      <MenuItem mnemonicParsing="false" onAction="#deleteSelectedContextMenu_PATIENT" text="DELETE PATIENT" />
                                                   </items>
                                                 </ContextMenu>
                                              </contextMenu>
@@ -268,6 +277,13 @@
                                              <VBox.margin>
                                                 <Insets right="10.0" />
                                              </VBox.margin>
+                                             <contextMenu>
+                                                <ContextMenu fx:id="contextMenu_EXAMINATION">
+                                                  <items>
+                                                    <MenuItem mnemonicParsing="false" onAction="#deleteSelectedContextMenu_EXAMINATION" text="DELETE EXAMINATION" />
+                                                  </items>
+                                                </ContextMenu>
+                                             </contextMenu>
                                           </TableView>
                                           <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="789.0">
                                              <children>

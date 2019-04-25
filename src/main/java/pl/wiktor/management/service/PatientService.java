@@ -1,9 +1,13 @@
 package pl.wiktor.management.service;
 
 import org.springframework.stereotype.Service;
+import pl.wiktor.management.entity.ExaminationEntity;
 import pl.wiktor.management.entity.PatientEntity;
+import pl.wiktor.management.exceptions.ExceptionInfo;
+import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.mapper.PatientMapper;
 import pl.wiktor.management.model.PatientBO;
+import pl.wiktor.management.repository.ExaminationRepository;
 import pl.wiktor.management.repository.PatientRepository;
 
 import java.util.ArrayList;
@@ -16,11 +20,13 @@ import java.util.stream.Collectors;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final ExaminationRepository examinationRepository;
     private final PatientMapper patientMapper;
 
-    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper) {
+    public PatientService(PatientRepository patientRepository,ExaminationRepository examinationRepository, PatientMapper patientMapper) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
+        this.examinationRepository = examinationRepository;
     }
 
     public List<PatientBO> findAllPatients() {
@@ -60,5 +66,14 @@ public class PatientService {
 
     public PatientBO findByPesel(String pesel) {
         return patientMapper.fromEntityToBO(patientRepository.findByPesel(pesel).get());
+    }
+
+    public void deletePatient(PatientBO patientBO) {
+        List<ExaminationEntity> examinationEntityList = examinationRepository.findByPatientEntity_PeselContainingIgnoringCase(patientBO.getPesel());
+        if(examinationEntityList.isEmpty()){
+        patientRepository.delete(patientRepository.findByPesel(patientBO.getPesel()).get());
+        } else {
+            ExceptionResolverService.resolve(ExceptionInfo.CANNOT_DELETE_PATIENT);
+        }
     }
 }

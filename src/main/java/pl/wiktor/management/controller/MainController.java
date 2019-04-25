@@ -29,12 +29,112 @@ import java.util.Optional;
 
 @Controller
 public class MainController {
+
+    private List<UserBO> userBOList;
+    private List<PatientBO> patientBOList;
+    private List<ExaminationBO> examinationBOList;
+
+    private final AppContext appContext;
+    private final StageManager stageManager;
+    private final AuthenticationService authenticationService;
+    private final UserService userService;
+    private final PatientService patientService;
+    private final ExaminationService examinationService;
+
+    public MainController(@Lazy StageManager stageManager,
+                          AppContext appContext,
+                          AuthenticationService authenticationService,
+                          UserService userService,
+                          PatientService patientService,
+                          ExaminationService examinationService
+    ) {
+        this.stageManager = stageManager;
+        this.appContext = appContext;
+        this.authenticationService = authenticationService;
+        this.userService = userService;
+        this.patientService = patientService;
+        this.examinationService = examinationService;
+    }
+
+    @FXML
+    public void initialize() {
+        if (!authenticationService.isAdministrator()) {
+            userManagementTab.setDisable(true);
+            tabPaneComponent.getTabs().remove(userManagementTab);
+        }
+        stageManager.fadeInAnimation(window);
+        this.authenticatedUserLabel.setText(this.appContext.getAuthenticatedUser().getLastName()
+                + " "
+                + this.appContext.getAuthenticatedUser().getFirstName()
+                + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]" + " [" + this.appContext.getAuthenticatedUser().getRole() + "]");
+        userBOList = userService.findAllUsers();
+        patientBOList = patientService.findAllPatients();
+        examinationBOList = examinationService.findAllExaminations();
+        fillUserManagementTable(userBOList);
+        fillPatientManagementTable(patientBOList);
+        fillExaminationTable(examinationBOList);
+        fillSearchCheckList();
+        openRegistrationWindow();
+        addEventHandlers();
+    }
+
+    //<editor-fold desc="GLOBAL WINDOW TAB">
+    //SECTION: GLOBAL WINDOW TAB
     @FXML
     public AnchorPane window;
     @FXML
     public Label authenticatedUserLabel;
     @FXML
     public TabPane tabPaneComponent;
+
+    private void addEventHandlers() {
+        this.searchTextBox_USER.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER && this.searchTextBox_USER.isFocused()) {
+                search_USER();
+            }
+        });
+
+        this.searchTextBox_PATIENT.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER && this.searchTextBox_PATIENT.isFocused()) {
+                search_PATIENT();
+            }
+        });
+
+        this.searchTextBox_EXAMINATION.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER && this.searchTextBox_EXAMINATION.isFocused()) {
+                search_EXAMINATION();
+            }
+        });
+    }
+
+    @FXML
+    public void changePassword(ActionEvent actionEvent) {
+        stageManager.showScene(FxmlView.CHANGE_PASSWORD);
+    }
+
+    @FXML
+    public void logout(ActionEvent actionEvent) {
+        authenticationService.clearCredentials();
+        stageManager.fadeOutAnimation(window, FxmlView.LOGIN);
+    }
+
+    private void fillSearchCheckList() {
+        List<String> columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "EMAIL", "ROLE");
+        this.searchChoiceBox_USER.setItems(FXCollections.observableArrayList(columnNames));
+        this.searchChoiceBox_USER.setValue("LASTNAME");
+
+        columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "PESEL", "GENDER");
+        this.searchChoiceBox_PATIENT.setItems(FXCollections.observableArrayList(columnNames));
+        this.searchChoiceBox_PATIENT.setValue("LASTNAME");
+
+        columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "PESEL", "EXAMINATION", "STATUS");
+        this.searchChoiceBox_EXAMINATION.setItems(FXCollections.observableArrayList(columnNames));
+        this.searchChoiceBox_EXAMINATION.setValue("STATUS");
+    }
+//</editor-fold>
+
+    //<editor-fold desc="USER TAB">
+    //SECTION: USER
     @FXML
     public Tab userManagementTab;
     @FXML
@@ -59,6 +159,84 @@ public class MainController {
     public Button searchButton_USER;
     @FXML
     public Button clearButton_USER;
+    @FXML
+    public ContextMenu contextMenu_USER;
+
+    void fillUserManagementTable(List<UserBO> userBOList) {
+        column_id_USER.setCellValueFactory(new PropertyValueFactory<>("id"));
+        column_lastName_USER.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        column_firstName_USER.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        column_email_USER.setCellValueFactory(new PropertyValueFactory<>("email"));
+        column_role_USER.setCellValueFactory(new PropertyValueFactory<>("role"));
+        userManagementTable_USER.refresh();
+        userBOList.remove(userBOList.indexOf(this.appContext.getAuthenticatedUser()));
+        userManagementTable_USER.setItems(FXCollections.observableArrayList(userBOList));
+        countResultLabel_USER.setText(String.valueOf(userBOList.size()));
+    }
+
+
+    @FXML
+    public void search_USER() {
+        List<UserBO> searchList;
+        if (!this.searchTextBox_USER.getText().isEmpty() && (this.searchTextBox_USER.getText() != null)) {
+            if (!this.searchChoiceBox_USER.getValue().equals("ID")) {
+                searchList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
+                fillUserManagementTable(searchList);
+            } else {
+                if (this.searchTextBox_USER.getText().matches("^[0-9]*$")) {
+                    searchList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
+                    fillUserManagementTable(searchList);
+                } else {
+                    ExceptionResolverService.resolve(ExceptionInfo.ID_SHOULD_BE_NUMBER);
+                }
+            }
+        }
+    }
+
+    @FXML
+    public void clearResults_USER(ActionEvent actionEvent) {
+        fillUserManagementTable(this.userBOList);
+        this.searchTextBox_USER.setText("");
+    }
+
+    @FXML
+    public void refresh_USER(ActionEvent actionEvent) {
+        this.userBOList = userService.findAllUsers();
+        this.searchTextBox_USER.setText("");
+        this.searchChoiceBox_USER.setValue("LASTNAME");
+        fillUserManagementTable(this.userBOList);
+    }
+
+
+    public void deleteSelectedContextMenu_USER(ActionEvent actionEvent) {
+        UserBO userBO = this.userManagementTable_USER.getSelectionModel().getSelectedItem();
+        if (userBO != null) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("[DELETE USER ALERT]");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure to delete user:\n" +
+                    "User: [" + userBO.getFirstName() + " " + userBO.getLastName() + "]\n" +
+                    "Role: [" + userBO.getRole() + "]?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                userService.deleteUser(userBO);
+                fillUserManagementTable(userService.findAllUsers());
+            }
+        }
+    }
+
+    public void editSelectedContextMenu_USER(ActionEvent actionEvent) {
+        UserBO userBO = this.userManagementTable_USER.getSelectionModel().getSelectedItem();
+        if (userBO != null) {
+            this.appContext.setUserToEdit(userBO);
+            stageManager.showScene(FxmlView.USER_EDIT);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="PATIENT TAB">
+    //SECTION: PATIENT
+
     @FXML
     public Tab patientManagementTab;
     @FXML
@@ -85,107 +263,8 @@ public class MainController {
     public Button searchButton_PATIENT;
     @FXML
     public Button clearButton_PATIENT;
-
-
-    private final AppContext appContext;
-    private final StageManager stageManager;
-    private final AuthenticationService authenticationService;
-    private final UserService userService;
-    private final PatientService patientService;
-    private final ExaminationService examinationService;
-    public Tab examinationManagementTab;
-    public Button refreshButton_EXAMINATION;
-    public TableView<ExaminationBO> examinationManagementTable_EXAMINATION;
-    public TableColumn<ExaminationBO, Long> column_id_EXAMINATION;
-    public TableColumn<ExaminationBO, String> column_lastName_EXAMINATION;
-    public TableColumn<ExaminationBO, String> column_firstName_EXAMINATION;
-    public TableColumn<ExaminationBO, String> column_PESEL_EXAMINATION;
-    public TableColumn<ExaminationBO, String> column_examination_EXAMINATION;
-    public TableColumn<ExaminationBO, String> column_status_EXAMINATION;
-    public Label countResultLabel_EXAMINATION;
-    public ChoiceBox<String> searchChoiceBox_EXAMINATION;
-    public TextField searchTextBox_EXAMINATION;
-    public Button searchButton_EXAMINATION;
-    public Button clearButton_EXAMINATION;
-    public ContextMenu contextMenu_USER;
+    @FXML
     public ContextMenu contextMenu_PATIENT;
-
-    List<UserBO> userBOList;
-    List<PatientBO> patientBOList;
-    List<ExaminationBO> examinationBOList;
-
-
-    public MainController(@Lazy StageManager stageManager,
-                          AppContext appContext,
-                          AuthenticationService authenticationService,
-                          UserService userService,
-                          PatientService patientService,
-                          ExaminationService examinationService
-    ) {
-        this.stageManager = stageManager;
-        this.appContext = appContext;
-        this.authenticationService = authenticationService;
-        this.userService = userService;
-        this.patientService = patientService;
-        this.examinationService = examinationService;
-    }
-
-    @FXML
-    public void changePassword(ActionEvent actionEvent) {
-        stageManager.showScene(FxmlView.CHANGE_PASSWORD);
-    }
-
-    @FXML
-    public void logout(ActionEvent actionEvent) {
-        authenticationService.clearCredentials();
-        stageManager.fadeOutAnimation(window, FxmlView.LOGIN);
-    }
-
-    @FXML
-    public void initialize() {
-        if (!authenticationService.isAdministrator()) {
-            userManagementTab.setDisable(true);
-            tabPaneComponent.getTabs().remove(userManagementTab);
-        }
-        stageManager.fadeInAnimation(window);
-
-        this.authenticatedUserLabel.setText(this.appContext.getAuthenticatedUser().getLastName()
-                + " "
-                + this.appContext.getAuthenticatedUser().getFirstName()
-                + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]" + " [" + this.appContext.getAuthenticatedUser().getRole() + "]");
-        userBOList = userService.findAllUsers();
-        patientBOList = patientService.findAllPatients();
-        examinationBOList = examinationService.findAllExaminations();
-        fillUserManagementTable(userBOList);
-        fillPatientManagementTable(patientBOList);
-        fillExaminationTable(examinationBOList);
-        fillSearchCheckList();
-        openRegistrationWindow();
-        addEventHandlers();
-    }
-
-
-    private void fillSearchCheckList() {
-        List<String> columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "EMAIL", "ROLE");
-        this.searchChoiceBox_USER.setItems(FXCollections.observableArrayList(columnNames));
-        this.searchChoiceBox_USER.setValue("LASTNAME");
-
-        columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "PESEL", "GENDER");
-        this.searchChoiceBox_PATIENT.setItems(FXCollections.observableArrayList(columnNames));
-        this.searchChoiceBox_PATIENT.setValue("LASTNAME");
-
-        columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "PESEL", "EXAMINATION", "STATUS");
-        this.searchChoiceBox_EXAMINATION.setItems(FXCollections.observableArrayList(columnNames));
-        this.searchChoiceBox_EXAMINATION.setValue("STATUS");
-    }
-
-    public void editSelectedContextMenu_USER(ActionEvent actionEvent) {
-        UserBO userBO = this.userManagementTable_USER.getSelectionModel().getSelectedItem();
-        if (userBO != null) {
-            this.appContext.setUserToEdit(userBO);
-            stageManager.showScene(FxmlView.USER_EDIT);
-        }
-    }
 
     private void openRegistrationWindow() {
         this.patientManagementTable_PATIENT.setRowFactory(user -> {
@@ -201,18 +280,6 @@ public class MainController {
         });
     }
 
-    void fillUserManagementTable(List<UserBO> userBOList) {
-        column_id_USER.setCellValueFactory(new PropertyValueFactory<>("id"));
-        column_lastName_USER.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        column_firstName_USER.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        column_email_USER.setCellValueFactory(new PropertyValueFactory<>("email"));
-        column_role_USER.setCellValueFactory(new PropertyValueFactory<>("role"));
-        userManagementTable_USER.refresh();
-        userBOList.remove(userBOList.indexOf(this.appContext.getAuthenticatedUser()));
-        userManagementTable_USER.setItems(FXCollections.observableArrayList(userBOList));
-        countResultLabel_USER.setText(String.valueOf(userBOList.size()));
-    }
-
     void fillPatientManagementTable(List<PatientBO> patientBOList) {
         column_id_PATIENT.setCellValueFactory(new PropertyValueFactory<>("id"));
         column_firstName_PATIENT.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -225,85 +292,40 @@ public class MainController {
         countResultLabel_PATIENT.setText(String.valueOf(patientBOList.size()));
     }
 
-    void fillExaminationTable(List<ExaminationBO> examinationBOList) {
-        column_id_EXAMINATION.setCellValueFactory(new PropertyValueFactory<>("id"));
-        column_lastName_EXAMINATION.setCellValueFactory(data -> {
-            StringProperty sp = new SimpleStringProperty();
-            sp.setValue(String.valueOf(data.getValue().getPatientBO().getLastName()));
-            return sp;
-        });
-        column_firstName_EXAMINATION.setCellValueFactory(data -> {
-            StringProperty sp = new SimpleStringProperty();
-            sp.setValue(String.valueOf(data.getValue().getPatientBO().getFirstName()));
-            return sp;
-        });
-        column_PESEL_EXAMINATION.setCellValueFactory(data -> {
-            StringProperty sp = new SimpleStringProperty();
-            sp.setValue(String.valueOf(data.getValue().getPatientBO().getPesel()));
-            return sp;
-        });
-        column_examination_EXAMINATION.setCellValueFactory(data -> {
-            StringProperty sp = new SimpleStringProperty();
-            sp.setValue(String.valueOf(data.getValue().getImgTechBO().getName()));
-            return sp;
-        });
-        column_status_EXAMINATION.setCellFactory(CustomStatusCell.cellFactory);
-        column_status_EXAMINATION.setCellValueFactory(new PropertyValueFactory<>("status"));
-        examinationManagementTable_EXAMINATION.refresh();
-        examinationManagementTable_EXAMINATION.setItems(FXCollections.observableArrayList(examinationBOList));
-        countResultLabel_EXAMINATION.setText(String.valueOf(examinationBOList.size()));
-    }
-
-    @FXML
-    public void search_USER() {
-        List<UserBO> serachList;
-        if (!this.searchTextBox_USER.getText().isEmpty() && (this.searchTextBox_USER.getText() != null)) {
-            if (!this.searchChoiceBox_USER.getValue().equals("ID")) {
-                serachList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
-                fillUserManagementTable(serachList);
-            } else {
-                if (this.searchTextBox_USER.getText().matches("^[0-9]*$")) {
-                    serachList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
-                    fillUserManagementTable(serachList);
-                } else {
-                    ExceptionResolverService.resolve(ExceptionInfo.ID_SHOULD_BE_NUMBER);
-                }
+    public void deleteSelectedContextMenu_PATIENT(ActionEvent actionEvent) {
+        PatientBO patientBO = this.patientManagementTable_PATIENT.getSelectionModel().getSelectedItem();
+        if (patientBO != null) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("[DELETE PATIENT ALERT]");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure to delete patient and all examinations:\nPatient: [" + patientBO.getFirstName() + " " + patientBO.getLastName() + "] ?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                patientService.deletePatient(patientBO);
+                fillPatientManagementTable(patientService.findAllPatients());
+                fillExaminationTable(examinationService.findAllExaminations());
             }
         }
     }
 
-    private void addEventHandlers() {
-        this.searchTextBox_USER.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER && this.searchTextBox_USER.isFocused()) {
-                search_USER();
-            }
-        });
-
-        this.searchTextBox_PATIENT.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER && this.searchTextBox_PATIENT.isFocused()) {
-                search_PATIENT();
-            }
-        });
-
-        this.searchTextBox_EXAMINATION.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER && this.searchTextBox_EXAMINATION.isFocused()) {
-                search_EXAMINATION();
-            }
-        });
+    public void createPatient_PATIENT(ActionEvent actionEvent) {
+        stageManager.showScene(FxmlView.REGISTER_PATIENT);
     }
 
-    @FXML
-    public void clearResults_USER(ActionEvent actionEvent) {
-        fillUserManagementTable(this.userBOList);
-        this.searchTextBox_USER.setText("");
+    public void refresh_EXAMINATION(ActionEvent event) {
+        this.examinationBOList = examinationService.findAllExaminations();
+        this.searchTextBox_EXAMINATION.setText("");
+        this.searchChoiceBox_EXAMINATION.setValue("STATUS");
+        fillExaminationTable(examinationBOList);
     }
 
-    @FXML
-    public void refresh_USER(ActionEvent actionEvent) {
-        this.userBOList = userService.findAllUsers();
-        this.searchTextBox_USER.setText("");
-        this.searchChoiceBox_USER.setValue("LASTNAME");
-        fillUserManagementTable(this.userBOList);
+    public void editSelectedContextMenu_PATIENT(ActionEvent actionEvent) {
+        PatientBO patientBO = this.patientManagementTable_PATIENT.getSelectionModel().getSelectedItem();
+        if (patientBO != null) {
+            this.appContext.setPatientToEditAction(true);
+            this.appContext.setPatientToEdit(patientBO);
+            stageManager.showScene(FxmlView.REGISTER_PATIENT);
+        }
     }
 
     @FXML
@@ -344,21 +366,71 @@ public class MainController {
         fillPatientManagementTable(this.patientBOList);
         this.searchTextBox_PATIENT.setText("");
     }
+    //</editor-fold>
 
+    //<editor-fold desc="EXAMINATION TAB">
+    //SECTION: EXAMINATION
+    @FXML
+    public Tab examinationManagementTab;
+    @FXML
+    public Button refreshButton_EXAMINATION;
+    @FXML
+    public TableView<ExaminationBO> examinationManagementTable_EXAMINATION;
+    @FXML
+    public TableColumn<ExaminationBO, Long> column_id_EXAMINATION;
+    @FXML
+    public TableColumn<ExaminationBO, String> column_lastName_EXAMINATION;
+    @FXML
+    public TableColumn<ExaminationBO, String> column_firstName_EXAMINATION;
+    @FXML
+    public TableColumn<ExaminationBO, String> column_PESEL_EXAMINATION;
+    @FXML
+    public TableColumn<ExaminationBO, String> column_examination_EXAMINATION;
+    @FXML
+    public TableColumn<ExaminationBO, String> column_status_EXAMINATION;
+    @FXML
+    public Label countResultLabel_EXAMINATION;
+    @FXML
+    public ChoiceBox<String> searchChoiceBox_EXAMINATION;
+    @FXML
+    public TextField searchTextBox_EXAMINATION;
+    @FXML
+    public Button searchButton_EXAMINATION;
+    @FXML
+    public Button clearButton_EXAMINATION;
+    @FXML
+    public ContextMenu contextMenu_EXAMINATION;
 
-    public void createPatient_PATIENT(ActionEvent actionEvent) {
-        stageManager.showScene(FxmlView.REGISTER_PATIENT);
-    }
-
-    public void refresh_EXAMINATION(ActionEvent event) {
-        this.examinationBOList = examinationService.findAllExaminations();
-        this.searchTextBox_EXAMINATION.setText("");
-        this.searchChoiceBox_EXAMINATION.setValue("STATUS");
-        fillExaminationTable(examinationBOList);
+    void fillExaminationTable(List<ExaminationBO> examinationBOList) {
+        column_id_EXAMINATION.setCellValueFactory(new PropertyValueFactory<>("id"));
+        column_lastName_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getPatientBO().getLastName()));
+            return sp;
+        });
+        column_firstName_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getPatientBO().getFirstName()));
+            return sp;
+        });
+        column_PESEL_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getPatientBO().getPesel()));
+            return sp;
+        });
+        column_examination_EXAMINATION.setCellValueFactory(data -> {
+            StringProperty sp = new SimpleStringProperty();
+            sp.setValue(String.valueOf(data.getValue().getImgTechBO().getName()));
+            return sp;
+        });
+        column_status_EXAMINATION.setCellFactory(CustomStatusCell.cellFactory);
+        column_status_EXAMINATION.setCellValueFactory(new PropertyValueFactory<>("status"));
+        examinationManagementTable_EXAMINATION.refresh();
+        examinationManagementTable_EXAMINATION.setItems(FXCollections.observableArrayList(examinationBOList));
+        countResultLabel_EXAMINATION.setText(String.valueOf(examinationBOList.size()));
     }
 
     public void search_EXAMINATION() {
-        //TODO Implement search examination
         List<ExaminationBO> examinationBOList;
         if (!this.searchTextBox_EXAMINATION.getText().isEmpty() && (this.searchTextBox_EXAMINATION.getText() != null)) {
             if (!this.searchChoiceBox_EXAMINATION.getValue().equals("ID")) {
@@ -366,7 +438,7 @@ public class MainController {
                 fillExaminationTable(examinationBOList);
             } else {
                 if (this.searchTextBox_EXAMINATION.getText().matches("^[0-9]*$")) {
-                    examinationBOList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
+                    examinationBOList = examinationService.findByParameter(this.searchChoiceBox_EXAMINATION.getValue(), this.searchTextBox_EXAMINATION.getText());
                     fillExaminationTable(examinationBOList);
                 } else {
                     ExceptionResolverService.resolve(ExceptionInfo.ID_SHOULD_BE_NUMBER);
@@ -380,29 +452,22 @@ public class MainController {
         this.searchTextBox_EXAMINATION.setText("");
     }
 
-    public void deleteSelectedContextMenu_USER(ActionEvent actionEvent) {
-        UserBO userBO = this.userManagementTable_USER.getSelectionModel().getSelectedItem();
-        if (userBO != null) {
+    public void deleteSelectedContextMenu_EXAMINATION(ActionEvent actionEvent) {
+        ExaminationBO examinationBO = this.examinationManagementTable_EXAMINATION.getSelectionModel().getSelectedItem();
+        if (examinationBO != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("[DELETE USER ALERT]");
+            alert.setTitle("[DELETE EXAMINATION ALERT]");
             alert.setHeaderText(null);
-            alert.setContentText("Are you sure to delete user:\nUser: [" + userBO.getFirstName() + " " + userBO.getLastName() + "]\nRole: [" + userBO.getRole() + "]?");
+            alert.setContentText("Are you sure to delete examination:\n" +
+                    "Patient: [" + examinationBO.getPatientBO().getFirstName() + " " + examinationBO.getPatientBO().getLastName() + "]\n" +
+                    "Examination: [" + examinationBO.getImgTechBO().getName() + "]\n" +
+                    "Status: [" + examinationBO.getStatus() + "] ?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                userService.deleteUser(userBO);
-                fillUserManagementTable(userService.findAllUsers());
+                examinationService.deletePatient(examinationBO);
+                fillExaminationTable(examinationService.findAllExaminations());
             }
         }
     }
-
-    public void editSelectedContextMenu_PATIENT(ActionEvent actionEvent) {
-        PatientBO patientBO = this.patientManagementTable_PATIENT.getSelectionModel().getSelectedItem();
-        if (patientBO != null) {
-            this.appContext.setPatientToEditAction(true);
-            this.appContext.setPatientToEdit(patientBO);
-            stageManager.showScene(FxmlView.REGISTER_PATIENT);
-        }
-    }
-
-
+    //</editor-fold>
 }
