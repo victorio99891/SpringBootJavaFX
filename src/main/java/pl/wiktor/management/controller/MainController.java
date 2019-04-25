@@ -359,6 +359,20 @@ public class MainController {
 
     public void search_EXAMINATION() {
         //TODO Implement search examination
+        List<ExaminationBO> examinationBOList;
+        if (!this.searchTextBox_EXAMINATION.getText().isEmpty() && (this.searchTextBox_EXAMINATION.getText() != null)) {
+            if (!this.searchChoiceBox_EXAMINATION.getValue().equals("ID")) {
+                examinationBOList = examinationService.findByParameter(this.searchChoiceBox_EXAMINATION.getValue(), this.searchTextBox_EXAMINATION.getText());
+                fillExaminationTable(examinationBOList);
+            } else {
+                if (this.searchTextBox_EXAMINATION.getText().matches("^[0-9]*$")) {
+                    examinationBOList = userService.findByParameter(this.searchChoiceBox_USER.getValue(), this.searchTextBox_USER.getText());
+                    fillExaminationTable(examinationBOList);
+                } else {
+                    ExceptionResolverService.resolve(ExceptionInfo.ID_SHOULD_BE_NUMBER);
+                }
+            }
+        }
     }
 
     public void clearResults_EXAMINATION(ActionEvent event) {

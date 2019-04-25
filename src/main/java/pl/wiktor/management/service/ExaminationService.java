@@ -12,6 +12,8 @@ import pl.wiktor.management.repository.ExaminationRepository;
 import pl.wiktor.management.repository.ImgTechRepository;
 import pl.wiktor.management.repository.PatientRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,5 +47,16 @@ public class ExaminationService {
             examinationEntity.setImagingTechniqueEntity(imagingTechniqueEntity.get());
             examinationRepository.save(examinationEntity);
         }
+    }
+
+    public List<ExaminationBO> findByParameter(String parameter, String searchValue) {
+        List<ExaminationBO> examinationBOList;
+        Optional<ExaminationEntity> examinationEntity;
+        if (parameter.equals("ID")) {
+            examinationEntity = examinationRepository.findById(Long.valueOf(searchValue));
+            return examinationEntity.map(examination -> Collections.singletonList(examinationMapper.fromEntityToBO(examination))).orElse(Collections.emptyList());
+        }
+
+        return new ArrayList<>();
     }
 }
