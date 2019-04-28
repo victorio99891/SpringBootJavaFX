@@ -60,7 +60,7 @@ public class StageManager {
             Stage stage = new Stage();
             stage.setTitle(view.getTitle());
             stage.setScene(scene);
-            stage.setResizable(false);
+//            stage.setResizable(false);
             stage.centerOnScreen();
             stage.show();
         } catch (IOException e) {
@@ -79,7 +79,7 @@ public class StageManager {
 
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
+//        primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
         primaryStage.getIcons().add(new Image(MainController.class.getResourceAsStream("/icon/icon.png")));
