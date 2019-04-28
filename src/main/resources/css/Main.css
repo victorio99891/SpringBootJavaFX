@@ -1,3 +1,8 @@
+.root {
+    -fx-font-family: "Ubuntu Regular";
+    -fx-font-size: 13px;
+}
+
 .refreshButton {
     -fx-background-image: url('/icon/refresh.png');
     -fx-background-repeat: stretch;
