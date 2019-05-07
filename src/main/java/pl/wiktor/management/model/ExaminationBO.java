@@ -9,6 +9,8 @@ public class ExaminationBO {
 
     private String status;
 
+    private String description;
+
     private ImgTechBO imgTechBO;
 
     private PatientBO patientBO;

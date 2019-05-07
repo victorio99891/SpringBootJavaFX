@@ -3,6 +3,7 @@ package pl.wiktor.management.service;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import pl.wiktor.management.mapper.RoleMapper;
+import pl.wiktor.management.model.ExaminationBO;
 import pl.wiktor.management.model.PatientBO;
 import pl.wiktor.management.model.RoleBO;
 import pl.wiktor.management.model.UserBO;
@@ -23,6 +24,7 @@ public class AppContext {
     private PatientBO patientToRegister;
     private PatientBO patientToEdit;
     private List<RoleBO> roleBOList;
+    private ExaminationBO examinationToManage;
 
     private boolean patientToEditAction;
 

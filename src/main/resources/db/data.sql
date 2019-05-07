@@ -18,12 +18,12 @@ values ('RTG'),
        ('MRI'),
        ('USG');
 
-INSERT INTO EXAMINATIONS (IMG_TECH_ID, PATIENT_ID, STATUS)
-values (1, 3, 'REGISTERED'),
-       (2, 1, 'REQUESTED'),
-       (3, 2, 'IN PROGRESS'),
-       (1, 4, 'FOR DESCRIPTION'),
-       (1, 6, 'DONE');
+INSERT INTO EXAMINATIONS (IMG_TECH_ID, PATIENT_ID, STATUS, DESCRIPTION)
+values (1, 3, 'REGISTERED',''),
+       (2, 1, 'REQUESTED',''),
+       (3, 2, 'IN PROGRESS',''),
+       (1, 4, 'FOR DESCRIPTION',''),
+       (1, 6, 'DONE','All seems to be in normal state of patient health.');
 
 
 INSERT INTO USERS (EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, ROLE_ID)

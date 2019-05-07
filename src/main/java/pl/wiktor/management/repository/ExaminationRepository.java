@@ -5,9 +5,12 @@ import org.springframework.stereotype.Repository;
 import pl.wiktor.management.entity.ExaminationEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ExaminationRepository extends JpaRepository<ExaminationEntity, Long> {
+
+    Optional<ExaminationEntity> findById(Long id);
 
     List<ExaminationEntity> findByPatientEntity_FirstNameContainingIgnoringCase(String name);
 

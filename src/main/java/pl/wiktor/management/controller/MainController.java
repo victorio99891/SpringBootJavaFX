@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
@@ -19,6 +20,7 @@ import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.model.ExaminationBO;
 import pl.wiktor.management.model.PatientBO;
 import pl.wiktor.management.model.UserBO;
+import pl.wiktor.management.model.enums.ExaminationStatusEnum;
 import pl.wiktor.management.service.*;
 import pl.wiktor.management.utils.StageManager;
 import pl.wiktor.management.view.FxmlView;
@@ -29,6 +31,7 @@ import java.util.Optional;
 
 @Controller
 public class MainController {
+
 
     private List<UserBO> userBOList;
     private List<PatientBO> patientBOList;
@@ -76,6 +79,7 @@ public class MainController {
         fillSearchCheckList();
         openRegistrationWindow();
         addEventHandlers();
+        openExaminationWindows();
     }
 
     //<editor-fold desc="GLOBAL WINDOW TAB">
@@ -131,6 +135,23 @@ public class MainController {
         this.searchChoiceBox_EXAMINATION.setItems(FXCollections.observableArrayList(columnNames));
         this.searchChoiceBox_EXAMINATION.setValue("STATUS");
     }
+
+    private void rotateTheRefreshButton(ImageView buttonImageView) {
+        Thread thr = new Thread(() -> {
+
+            for (int i = 0; i <= 720; i += 5) {
+                buttonImageView.setStyle("-fx-rotate: " + i);
+                try {
+                    Thread.sleep(20L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        });
+        thr.start();
+    }
 //</editor-fold>
 
     //<editor-fold desc="USER TAB">
@@ -161,6 +182,8 @@ public class MainController {
     public Button clearButton_USER;
     @FXML
     public ContextMenu contextMenu_USER;
+    @FXML
+    public ImageView refreshButtonImgView_USER;
 
     void fillUserManagementTable(List<UserBO> userBOList) {
         column_id_USER.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -205,6 +228,7 @@ public class MainController {
         this.searchTextBox_USER.setText("");
         this.searchChoiceBox_USER.setValue("LASTNAME");
         fillUserManagementTable(this.userBOList);
+        rotateTheRefreshButton(refreshButtonImgView_USER);
     }
 
 
@@ -265,6 +289,9 @@ public class MainController {
     public Button clearButton_PATIENT;
     @FXML
     public ContextMenu contextMenu_PATIENT;
+    @FXML
+    public ImageView refreshButtonImgView_PATIENT;
+
 
     private void openRegistrationWindow() {
         this.patientManagementTable_PATIENT.setRowFactory(user -> {
@@ -312,12 +339,6 @@ public class MainController {
         stageManager.showScene(FxmlView.REGISTER_PATIENT);
     }
 
-    public void refresh_EXAMINATION(ActionEvent event) {
-        this.examinationBOList = examinationService.findAllExaminations();
-        this.searchTextBox_EXAMINATION.setText("");
-        this.searchChoiceBox_EXAMINATION.setValue("STATUS");
-        fillExaminationTable(examinationBOList);
-    }
 
     public void editSelectedContextMenu_PATIENT(ActionEvent actionEvent) {
         PatientBO patientBO = this.patientManagementTable_PATIENT.getSelectionModel().getSelectedItem();
@@ -359,6 +380,7 @@ public class MainController {
         this.searchTextBox_PATIENT.setText("");
         this.searchChoiceBox_PATIENT.setValue("LASTNAME");
         fillPatientManagementTable(this.patientBOList);
+        rotateTheRefreshButton(refreshButtonImgView_PATIENT);
     }
 
     @FXML
@@ -400,6 +422,11 @@ public class MainController {
     public Button clearButton_EXAMINATION;
     @FXML
     public ContextMenu contextMenu_EXAMINATION;
+    @FXML
+    public MenuItem showResultMenuItem_EXAMINATION;
+    @FXML
+    public ImageView refreshButtonImgView_EXAMINATION;
+
 
     void fillExaminationTable(List<ExaminationBO> examinationBOList) {
         column_id_EXAMINATION.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -428,6 +455,59 @@ public class MainController {
         examinationManagementTable_EXAMINATION.refresh();
         examinationManagementTable_EXAMINATION.setItems(FXCollections.observableArrayList(examinationBOList));
         countResultLabel_EXAMINATION.setText(String.valueOf(examinationBOList.size()));
+    }
+
+    public void refresh_EXAMINATION(ActionEvent event) {
+        this.examinationBOList = examinationService.findAllExaminations();
+        this.searchTextBox_EXAMINATION.setText("");
+        this.searchChoiceBox_EXAMINATION.setValue("STATUS");
+        fillExaminationTable(examinationBOList);
+        rotateTheRefreshButton(refreshButtonImgView_EXAMINATION);
+    }
+
+
+    private void openExaminationWindows() {
+
+
+        this.examinationManagementTable_EXAMINATION.setRowFactory(user -> {
+            TableRow<ExaminationBO> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    ExaminationBO examinationFromRow = row.getItem();
+                    this.appContext.setExaminationToManage(examinationFromRow);
+                    if (examinationFromRow != null) {
+                        manageExaminationByStatus(examinationFromRow);
+                    }
+                }
+            });
+            row.setOnContextMenuRequested(event -> {
+                ExaminationBO examinationBO = row.getItem();
+                if (examinationBO != null) {
+                    if (examinationBO.getStatus().equals(ExaminationStatusEnum.DONE.name())) {
+                        this.showResultMenuItem_EXAMINATION.setDisable(false);
+                    } else {
+                        this.showResultMenuItem_EXAMINATION.setDisable(true);
+                    }
+                } else {
+                    this.showResultMenuItem_EXAMINATION.setDisable(true);
+                }
+            });
+            return row;
+        });
+    }
+
+    private void manageExaminationByStatus(ExaminationBO examinationFromRow) {
+        if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REGISTERED.name())) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("[REQUEST PATIENT EXAMINATION]");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure to request " + examinationFromRow.getImgTechBO().getName() + " [id:" + examinationFromRow.getId() + "] examination for:\nPatient: [" + examinationFromRow.getPatientBO().getFirstName() + " " + examinationFromRow.getPatientBO().getLastName() + "] ?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                patientService.changeExaminationStatus(examinationFromRow, ExaminationStatusEnum.REQUESTED);
+                fillExaminationTable(examinationService.findAllExaminations());
+            }
+        }
     }
 
     public void search_EXAMINATION() {
@@ -468,6 +548,10 @@ public class MainController {
                 fillExaminationTable(examinationService.findAllExaminations());
             }
         }
+    }
+
+    //TODO: Implement action on showResultWindow in EXAMINATION TABLE
+    public void showResultContextMenu_EXAMINATION(ActionEvent actionEvent) {
     }
     //</editor-fold>
 }

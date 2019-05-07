@@ -69,6 +69,8 @@
             <column name="STATUS" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="DESCRIPTION" type="VARCHAR(1000)">
+            </column>
             <column name="IMG_TECH_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>

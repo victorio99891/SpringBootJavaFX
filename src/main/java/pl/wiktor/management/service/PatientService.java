@@ -6,7 +6,9 @@ import pl.wiktor.management.entity.PatientEntity;
 import pl.wiktor.management.exceptions.ExceptionInfo;
 import pl.wiktor.management.exceptions.ExceptionResolverService;
 import pl.wiktor.management.mapper.PatientMapper;
+import pl.wiktor.management.model.ExaminationBO;
 import pl.wiktor.management.model.PatientBO;
+import pl.wiktor.management.model.enums.ExaminationStatusEnum;
 import pl.wiktor.management.repository.ExaminationRepository;
 import pl.wiktor.management.repository.PatientRepository;
 
@@ -23,7 +25,7 @@ public class PatientService {
     private final ExaminationRepository examinationRepository;
     private final PatientMapper patientMapper;
 
-    public PatientService(PatientRepository patientRepository,ExaminationRepository examinationRepository, PatientMapper patientMapper) {
+    public PatientService(PatientRepository patientRepository, ExaminationRepository examinationRepository, PatientMapper patientMapper) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
         this.examinationRepository = examinationRepository;
@@ -70,10 +72,18 @@ public class PatientService {
 
     public void deletePatient(PatientBO patientBO) {
         List<ExaminationEntity> examinationEntityList = examinationRepository.findByPatientEntity_PeselContainingIgnoringCase(patientBO.getPesel());
-        if(examinationEntityList.isEmpty()){
-        patientRepository.delete(patientRepository.findByPesel(patientBO.getPesel()).get());
+        if (examinationEntityList.isEmpty()) {
+            patientRepository.delete(patientRepository.findByPesel(patientBO.getPesel()).get());
         } else {
             ExceptionResolverService.resolve(ExceptionInfo.CANNOT_DELETE_PATIENT);
+        }
+    }
+
+    public void changeExaminationStatus(ExaminationBO examinationFromRow, ExaminationStatusEnum examinationStatusEnum) {
+        Optional<ExaminationEntity> examinationEntity = examinationRepository.findById(examinationFromRow.getId());
+        if (examinationEntity.isPresent()) {
+            examinationEntity.get().setStatus(examinationStatusEnum.name());
+            examinationRepository.save(examinationEntity.get());
         }
     }
 }

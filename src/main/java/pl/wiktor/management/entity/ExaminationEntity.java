@@ -17,6 +17,9 @@ public class ExaminationEntity {
     @Column(name = "STATUS", nullable = false)
     private String status;
 
+    @Column(name = "DESCRIPTION")
+    private String description;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "IMG_TECH_ID")
     private ImagingTechniqueEntity imagingTechniqueEntity;
