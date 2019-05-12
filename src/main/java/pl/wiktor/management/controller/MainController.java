@@ -507,6 +507,8 @@ public class MainController {
                 patientService.changeExaminationStatus(examinationFromRow, ExaminationStatusEnum.REQUESTED);
                 fillExaminationTable(examinationService.findAllExaminations());
             }
+        } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REQUESTED.name())) {
+            stageManager.showScene(FxmlView.MAKE_EXAMINATION);
         }
     }
 
