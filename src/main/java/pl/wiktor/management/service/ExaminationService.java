@@ -72,4 +72,17 @@ public class ExaminationService {
     public void deletePatient(ExaminationBO examinationBO) {
         examinationRepository.delete(examinationRepository.findById(examinationBO.getId()).get());
     }
+
+    public void makeExamination(ExaminationBO examinationBO, boolean inProgress) {
+        Optional<ExaminationEntity> examinationEntity = examinationRepository.findById(examinationBO.getId());
+        if (examinationEntity.isPresent() && inProgress) {
+            ExaminationEntity entity = examinationEntity.get();
+            entity.setStatus(ExaminationStatusEnum.IN_PROGRESS.getDisplayName());
+            examinationRepository.save(entity);
+        } else if (examinationEntity.isPresent()) {
+            ExaminationEntity entity = examinationEntity.get();
+            entity.setStatus(ExaminationStatusEnum.FOR_DESCRIPTION.getDisplayName());
+            examinationRepository.save(entity);
+        }
+    }
 }

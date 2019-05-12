@@ -508,6 +508,7 @@ public class MainController {
                 fillExaminationTable(examinationService.findAllExaminations());
             }
         } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REQUESTED.name())) {
+            appContext.setExaminationToManage(examinationFromRow);
             stageManager.showScene(FxmlView.MAKE_EXAMINATION);
         }
     }

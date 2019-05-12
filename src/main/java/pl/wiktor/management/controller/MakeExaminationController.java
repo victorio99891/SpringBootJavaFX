@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.service.AppContext;
+import pl.wiktor.management.service.ExaminationService;
 import pl.wiktor.management.service.PatientService;
 import pl.wiktor.management.utils.StageManager;
 
@@ -16,15 +17,17 @@ import pl.wiktor.management.utils.StageManager;
 public class MakeExaminationController {
 
     private final PatientService patientService;
+    private final ExaminationService examinationService;
     private final AppContext appContext;
     private final StageManager stageManager;
     private final MainController mainController;
 
-    public MakeExaminationController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController) {
+    public MakeExaminationController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController, ExaminationService examinationService) {
         this.patientService = patientService;
         this.appContext = appContext;
         this.stageManager = stageManager;
         this.mainController = mainController;
+        this.examinationService = examinationService;
     }
 
 
@@ -49,6 +52,10 @@ public class MakeExaminationController {
 
         Thread thr = new Thread(() -> {
 
+            examinationService.makeExamination(appContext.getExaminationToManage(), true);
+            mainController.fillExaminationTable(examinationService.findAllExaminations());
+
+
             this.exitButton.setDisable(true);
 
             for (int i = 0; i <= 15; i++) {
@@ -70,10 +77,14 @@ public class MakeExaminationController {
 
 
             preview.setImage(new Image("/examination/" + examinationName + ".jpg"));
+
+            examinationService.makeExamination(appContext.getExaminationToManage(), false);
+            mainController.fillExaminationTable(examinationService.findAllExaminations());
             this.exitButton.setDisable(false);
             this.makeExaminationButton.setDisable(true);
         });
         thr.start();
+
 
     }
 
