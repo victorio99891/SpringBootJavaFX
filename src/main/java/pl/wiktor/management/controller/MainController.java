@@ -122,6 +122,10 @@ public class MainController {
         stageManager.fadeOutAnimation(window, FxmlView.LOGIN);
     }
 
+    public void enableExaminationTableView() {
+        this.examinationManagementTable_EXAMINATION.setDisable(false);
+    }
+
     private void fillSearchCheckList() {
         List<String> columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "EMAIL", "ROLE");
         this.searchChoiceBox_USER.setItems(FXCollections.observableArrayList(columnNames));
@@ -497,7 +501,8 @@ public class MainController {
     }
 
     private void manageExaminationByStatus(ExaminationBO examinationFromRow) {
-        if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REGISTERED.name())) {
+        if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REGISTERED.getDisplayName())) {
+            this.examinationManagementTable_EXAMINATION.setDisable(true);
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("[REQUEST PATIENT EXAMINATION]");
             alert.setHeaderText(null);
@@ -507,9 +512,15 @@ public class MainController {
                 patientService.changeExaminationStatus(examinationFromRow, ExaminationStatusEnum.REQUESTED);
                 fillExaminationTable(examinationService.findAllExaminations());
             }
-        } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REQUESTED.name())) {
+            this.examinationManagementTable_EXAMINATION.setDisable(false);
+        } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REQUESTED.getDisplayName())) {
+            this.examinationManagementTable_EXAMINATION.setDisable(true);
             appContext.setExaminationToManage(examinationFromRow);
-            stageManager.showScene(FxmlView.MAKE_EXAMINATION);
+            stageManager.showUndecoratedScene(FxmlView.MAKE_EXAMINATION);
+        } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.FOR_DESCRIPTION.getDisplayName())) {
+            this.examinationManagementTable_EXAMINATION.setDisable(true);
+            appContext.setExaminationToManage(examinationFromRow);
+            stageManager.showUndecoratedScene(FxmlView.DESCRIBE_EXAMINATION);
         }
     }
 

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import pl.wiktor.management.controller.MainController;
@@ -60,6 +61,21 @@ public class StageManager {
             Stage stage = new Stage();
             stage.setTitle(view.getTitle());
             stage.setScene(scene);
+//            stage.setResizable(false);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            LOG.error("Failed to create new Window.", e);
+        }
+    }
+
+    public void showUndecoratedScene(final FxmlView view) {
+        try {
+            Scene scene = new Scene(springFXMLLoader.load(view.getFxmlFile()));
+            Stage stage = new Stage();
+            stage.setTitle(view.getTitle());
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UNDECORATED);
 //            stage.setResizable(false);
             stage.centerOnScreen();
             stage.show();

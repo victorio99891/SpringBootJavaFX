@@ -3,6 +3,7 @@ package pl.wiktor.management.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -39,6 +40,8 @@ public class MakeExaminationController {
     public ImageView preview;
     @FXML
     public Button exitButton;
+    @FXML
+    public ProgressIndicator progressIndicator;
 
     @FXML
     public void initialize() {
@@ -47,9 +50,7 @@ public class MakeExaminationController {
 
     @FXML
     public void makeExamination(ActionEvent actionEvent) {
-
-        String examinationName = "CT";
-
+        this.makeExaminationButton.setDisable(true);
         Thread thr = new Thread(() -> {
 
             examinationService.makeExamination(appContext.getExaminationToManage(), true);
@@ -58,7 +59,7 @@ public class MakeExaminationController {
 
             this.exitButton.setDisable(true);
 
-            for (int i = 0; i <= 15; i++) {
+            for (int i = 0; i <= 49; i++) {
                 if (i % 4 == 0) {
                     preview.setImage(new Image("/examination/PRE0.png"));
                 } else if (i % 4 == 1) {
@@ -68,27 +69,33 @@ public class MakeExaminationController {
                 } else if (i % 4 == 3) {
                     preview.setImage(new Image("/examination/PRE3.png"));
                 }
+
+                progressIndicator.setProgress(0.02 * i);
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
+            progressIndicator.setProgress(1);
 
-            preview.setImage(new Image("/examination/" + examinationName + ".jpg"));
+            preview.setImage(new Image("/examination/" + appContext.getExaminationToManage().getImgTechBO().getName() + ".jpg"));
 
             examinationService.makeExamination(appContext.getExaminationToManage(), false);
             mainController.fillExaminationTable(examinationService.findAllExaminations());
             this.exitButton.setDisable(false);
-            this.makeExaminationButton.setDisable(true);
+
         });
-        thr.start();
+        if (!thr.isAlive()) {
+            thr.start();
+        }
 
 
     }
 
     public void closeWindow(ActionEvent actionEvent) {
         stageManager.closeStageOnEvent(actionEvent);
+        mainController.enableExaminationTableView();
     }
 }

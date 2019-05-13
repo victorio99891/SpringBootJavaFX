@@ -85,4 +85,14 @@ public class ExaminationService {
             examinationRepository.save(entity);
         }
     }
+
+    public void saveDescription(ExaminationBO examinationToManage, String text) {
+        Optional<ExaminationEntity> examinationEntity = examinationRepository.findById(examinationToManage.getId());
+        if (examinationEntity.isPresent()) {
+            ExaminationEntity examination = examinationEntity.get();
+            examination.setDescription(text);
+            examination.setStatus(ExaminationStatusEnum.DONE.getDisplayName());
+            examinationRepository.save(examination);
+        }
+    }
 }

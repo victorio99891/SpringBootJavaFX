@@ -37,7 +37,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="88.0" prefWidth="453.0">
                <children>
-                  <ProgressIndicator prefHeight="75.0" prefWidth="46.0" progress="0.0" styleClass="progress">
+                  <ProgressIndicator fx:id="progressIndicator" prefHeight="75.0" prefWidth="46.0" progress="0.0" styleClass="progress">
                      <HBox.margin>
                         <Insets top="15.0" />
                      </HBox.margin>

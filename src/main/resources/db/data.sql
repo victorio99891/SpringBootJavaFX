@@ -23,7 +23,19 @@ values (1, 3, 'REGISTERED',''),
        (2, 1, 'REQUESTED',''),
        (3, 2, 'IN PROGRESS',''),
        (1, 4, 'FOR DESCRIPTION',''),
-       (1, 6, 'DONE','All seems to be in normal state of patient health.');
+       (1, 6, 'DONE','	=======================================
+                                        PATIENT DETAILS
+=======================================
+Name: Jan
+Lastname: Ząbek
+PESEL: 72073035951
+=======================================
+                                 EXAMINATION DETAILS
+=======================================
+Date: 2019-04-13
+Examination type: RTG
+
+Description: All seems to be normal. Patient is full of health.');
 
 
 INSERT INTO USERS (EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, ROLE_ID)
