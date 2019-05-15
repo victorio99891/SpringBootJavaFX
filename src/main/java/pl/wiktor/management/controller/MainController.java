@@ -61,15 +61,16 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        if (!authenticationService.isAdministrator()) {
-            userManagementTab.setDisable(true);
-            tabPaneComponent.getTabs().remove(userManagementTab);
-        }
+        resolveLoggedUserRoles();
         stageManager.fadeInAnimation(window);
         this.authenticatedUserLabel.setText(this.appContext.getAuthenticatedUser().getLastName()
                 + " "
                 + this.appContext.getAuthenticatedUser().getFirstName()
                 + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]" + " [" + this.appContext.getAuthenticatedUser().getRole() + "]");
+        if (authenticationService.isUser()) {
+            this.authenticatedUserLabel.setText(this.authenticatedUserLabel.getText() + " PLEASE CONTACT ADMINISTRATOR FOR ADDITIONAL PRIVILEGES!");
+            this.authenticatedUserLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
+        }
         userBOList = userService.findAllUsers();
         patientBOList = patientService.findAllPatients();
         examinationBOList = examinationService.findAllExaminations();
@@ -81,6 +82,7 @@ public class MainController {
         addEventHandlers();
         openExaminationWindows();
     }
+
 
     //<editor-fold desc="GLOBAL WINDOW TAB">
     //SECTION: GLOBAL WINDOW TAB
@@ -138,6 +140,21 @@ public class MainController {
         columnNames = Arrays.asList("ID", "LASTNAME", "FIRSTNAME", "PESEL", "EXAMINATION", "STATUS");
         this.searchChoiceBox_EXAMINATION.setItems(FXCollections.observableArrayList(columnNames));
         this.searchChoiceBox_EXAMINATION.setValue("STATUS");
+    }
+
+    private void resolveLoggedUserRoles() {
+        if (authenticationService.isUser()) {
+            userManagementTab.setDisable(true);
+            tabPaneComponent.getTabs().remove(userManagementTab);
+            patientManagementTab.setDisable(true);
+            tabPaneComponent.getTabs().remove(patientManagementTab);
+            examinationManagementTab.setDisable(true);
+            tabPaneComponent.getTabs().remove(examinationManagementTab);
+        }
+        if (!authenticationService.isAdministrator()) {
+            userManagementTab.setDisable(true);
+            tabPaneComponent.getTabs().remove(userManagementTab);
+        }
     }
 
     private void rotateTheRefreshButton(ImageView buttonImageView) {
@@ -521,6 +538,10 @@ public class MainController {
             this.examinationManagementTable_EXAMINATION.setDisable(true);
             appContext.setExaminationToManage(examinationFromRow);
             stageManager.showUndecoratedScene(FxmlView.DESCRIBE_EXAMINATION);
+        } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.DONE.getDisplayName())) {
+            this.examinationManagementTable_EXAMINATION.setDisable(true);
+            appContext.setExaminationToManage(examinationFromRow);
+            stageManager.showUndecoratedScene(FxmlView.DONE_EXAMINATION);
         }
     }
 

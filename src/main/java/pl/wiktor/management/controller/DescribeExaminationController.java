@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import pl.wiktor.management.model.ExaminationBO;
 import pl.wiktor.management.model.PatientBO;
 import pl.wiktor.management.service.AppContext;
+import pl.wiktor.management.service.AuthenticationService;
 import pl.wiktor.management.service.ExaminationService;
 import pl.wiktor.management.service.PatientService;
 import pl.wiktor.management.utils.StageManager;
@@ -26,13 +27,15 @@ public class DescribeExaminationController {
     private final AppContext appContext;
     private final StageManager stageManager;
     private final MainController mainController;
+    private final AuthenticationService authenticationService;
 
-    public DescribeExaminationController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController, ExaminationService examinationService) {
+    public DescribeExaminationController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController, ExaminationService examinationService, AuthenticationService authenticationService) {
         this.patientService = patientService;
         this.appContext = appContext;
         this.stageManager = stageManager;
         this.mainController = mainController;
         this.examinationService = examinationService;
+        this.authenticationService = authenticationService;
     }
 
     @FXML
@@ -50,9 +53,14 @@ public class DescribeExaminationController {
     public void initialize() {
         preview.setImage(new Image("/examination/" + appContext.getExaminationToManage().getImgTechBO().getName() + ".jpg"));
         textArea.setText(getExampleDescription(appContext.getExaminationToManage().getPatientBO(), appContext.getExaminationToManage()));
+        if (authenticationService.isTechnican()) {
+            textArea.setEditable(false);
+            confirmButton.setDisable(true);
+        }
     }
 
     public void saveDescription(ActionEvent actionEvent) {
+        textArea.setText(textArea.getText() + "\n\nExamination described by doctor: " + appContext.getAuthenticatedUser().getLastName().toUpperCase() + " " + appContext.getAuthenticatedUser().getFirstName().toUpperCase());
         examinationService.saveDescription(appContext.getExaminationToManage(), textArea.getText());
         confirmButton.setDisable(true);
         textArea.setEditable(false);

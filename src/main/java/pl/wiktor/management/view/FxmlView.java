@@ -107,6 +107,17 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/DescriptionExaminationWindow.fxml";
         }
+    },
+    DONE_EXAMINATION {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("examination_done.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/DoneExaminationWindow.fxml";
+        }
     };
 
     public abstract String getTitle();

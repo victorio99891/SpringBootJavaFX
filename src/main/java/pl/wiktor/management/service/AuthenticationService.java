@@ -33,11 +33,15 @@ public class AuthenticationService {
     }
 
     public boolean isUser() {
-        return true;
+        return this.appContext.getAuthenticatedUser().getRole().equals(RoleEnum.USER.name());
     }
 
     public boolean isAdministrator() {
         return this.appContext.getAuthenticatedUser().getRole().equals(RoleEnum.ADMINISTRATOR.name());
+    }
+
+    public boolean isTechnican() {
+        return this.appContext.getAuthenticatedUser().getRole().equals(RoleEnum.TECHNICIAN.name());
     }
 
     public boolean checkUserCredentials(String login, String password) {
