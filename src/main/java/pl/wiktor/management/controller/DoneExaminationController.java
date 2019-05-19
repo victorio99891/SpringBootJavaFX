@@ -48,6 +48,8 @@ public class DoneExaminationController {
         this.textArea.setText(appContext.getExaminationToManage().getDescription());
         preview.setImage(new Image("/examination/" + appContext.getExaminationToManage().getImgTechBO().getName() + ".jpg"));
         this.textArea.setEditable(false);
+
+
     }
 
 

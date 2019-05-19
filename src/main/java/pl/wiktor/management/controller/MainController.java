@@ -81,6 +81,7 @@ public class MainController {
         openRegistrationWindow();
         addEventHandlers();
         openExaminationWindows();
+
     }
 
 

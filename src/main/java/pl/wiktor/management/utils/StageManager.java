@@ -100,6 +100,11 @@ public class StageManager {
         primaryStage.centerOnScreen();
         primaryStage.getIcons().add(new Image(MainController.class.getResourceAsStream("/icon/icon.png")));
 
+        primaryStage.setOnCloseRequest(t -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
         try {
             primaryStage.show();
         } catch (Exception exception) {
@@ -133,5 +138,6 @@ public class StageManager {
         LOG.error(errorMsg, exception, exception.getCause());
         Platform.exit();
     }
+
 
 }

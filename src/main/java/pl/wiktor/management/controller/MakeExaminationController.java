@@ -1,12 +1,16 @@
 package pl.wiktor.management.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.service.AppContext;
@@ -22,6 +26,8 @@ public class MakeExaminationController {
     private final AppContext appContext;
     private final StageManager stageManager;
     private final MainController mainController;
+    private Thread thr;
+
 
     public MakeExaminationController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController, ExaminationService examinationService) {
         this.patientService = patientService;
@@ -51,7 +57,7 @@ public class MakeExaminationController {
     @FXML
     public void makeExamination(ActionEvent actionEvent) {
         this.makeExaminationButton.setDisable(true);
-        Thread thr = new Thread(() -> {
+        thr = new Thread(() -> {
 
             examinationService.makeExamination(appContext.getExaminationToManage(), true);
             mainController.fillExaminationTable(examinationService.findAllExaminations());
