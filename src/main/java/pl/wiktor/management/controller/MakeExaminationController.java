@@ -1,16 +1,12 @@
 package pl.wiktor.management.controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.service.AppContext;
@@ -57,9 +53,13 @@ public class MakeExaminationController {
     @FXML
     public void makeExamination(ActionEvent actionEvent) {
         this.makeExaminationButton.setDisable(true);
+
+        Long examinationId = this.appContext.getExaminationId();
+
         thr = new Thread(() -> {
 
-            examinationService.makeExamination(appContext.getExaminationToManage(), true);
+
+            examinationService.makeExamination(this.appContext.getExaminationToManage().get(examinationId), true);
             mainController.fillExaminationTable(examinationService.findAllExaminations());
 
 
@@ -86,9 +86,9 @@ public class MakeExaminationController {
 
             progressIndicator.setProgress(1);
 
-            preview.setImage(new Image("/examination/" + appContext.getExaminationToManage().getImgTechBO().getName() + ".jpg"));
+            preview.setImage(new Image("/examination/" + this.appContext.getExaminationToManage().get(examinationId).getImgTechBO().getName() + ".jpg"));
 
-            examinationService.makeExamination(appContext.getExaminationToManage(), false);
+            examinationService.makeExamination(this.appContext.getExaminationToManage().get(examinationId), false);
             mainController.fillExaminationTable(examinationService.findAllExaminations());
             this.exitButton.setDisable(false);
 

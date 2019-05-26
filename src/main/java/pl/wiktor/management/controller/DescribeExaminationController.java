@@ -51,8 +51,9 @@ public class DescribeExaminationController {
 
     @FXML
     public void initialize() {
-        preview.setImage(new Image("/examination/" + appContext.getExaminationToManage().getImgTechBO().getName() + ".jpg"));
-        textArea.setText(getExampleDescription(appContext.getExaminationToManage().getPatientBO(), appContext.getExaminationToManage()));
+        Long examinationId = this.appContext.getExaminationId();
+        preview.setImage(new Image("/examination/" + this.appContext.getExaminationToManage().get(examinationId).getImgTechBO().getName() + ".jpg"));
+        textArea.setText(getExampleDescription(this.appContext.getExaminationToManage().get(examinationId).getPatientBO(), this.appContext.getExaminationToManage().get(examinationId)));
         if (authenticationService.isTechnican()) {
             textArea.setEditable(false);
             confirmButton.setDisable(true);
@@ -60,8 +61,9 @@ public class DescribeExaminationController {
     }
 
     public void saveDescription(ActionEvent actionEvent) {
+        Long examinationId = this.appContext.getExaminationId();
         textArea.setText(textArea.getText() + "\n\nExamination described by doctor: " + appContext.getAuthenticatedUser().getLastName().toUpperCase() + " " + appContext.getAuthenticatedUser().getFirstName().toUpperCase());
-        examinationService.saveDescription(appContext.getExaminationToManage(), textArea.getText());
+        examinationService.saveDescription(this.appContext.getExaminationToManage().get(examinationId), textArea.getText());
         confirmButton.setDisable(true);
         textArea.setEditable(false);
         mainController.fillExaminationTable(examinationService.findAllExaminations());

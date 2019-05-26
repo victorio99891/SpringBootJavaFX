@@ -45,11 +45,10 @@ public class DoneExaminationController {
 
     @FXML
     public void initialize() {
-        this.textArea.setText(appContext.getExaminationToManage().getDescription());
-        preview.setImage(new Image("/examination/" + appContext.getExaminationToManage().getImgTechBO().getName() + ".jpg"));
+        Long examinationId = this.appContext.getExaminationId();
+        this.textArea.setText(appContext.getExaminationToManage().get(examinationId).getDescription());
+        preview.setImage(new Image("/examination/" + this.appContext.getExaminationToManage().get(examinationId).getImgTechBO().getName() + ".jpg"));
         this.textArea.setEditable(false);
-
-
     }
 
 
