@@ -12,6 +12,8 @@
 
 ### HOW TO RUN?
 
+## JDK VERSION 8 IS NECESSARY BECAUSE IN THE FUTURE RELEASES JAVAFX LIBRARIES ARE DELETED !!!
+
 - Install JDK version **jdk1.8.0_211** from:  https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
 - Install APACHE MAVEN from: https://maven.apache.org/download.cgi
