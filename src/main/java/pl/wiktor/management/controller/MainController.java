@@ -25,6 +25,7 @@ import pl.wiktor.management.service.*;
 import pl.wiktor.management.utils.StageManager;
 import pl.wiktor.management.view.FxmlView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -214,7 +215,16 @@ public class MainController {
         column_email_USER.setCellValueFactory(new PropertyValueFactory<>("email"));
         column_role_USER.setCellValueFactory(new PropertyValueFactory<>("role"));
         userManagementTable_USER.refresh();
-        userBOList.remove(userBOList.indexOf(this.appContext.getAuthenticatedUser()));
+        if (!userBOList.isEmpty()) {
+            int authenticatedUserIndex = userBOList.indexOf(this.appContext.getAuthenticatedUser());
+            if (authenticatedUserIndex != -1) {
+                if (userBOList.size() == 1) {
+                    userBOList = new ArrayList<>();
+                } else {
+                    userBOList.remove(authenticatedUserIndex);
+                }
+            }
+        }
         userManagementTable_USER.setItems(FXCollections.observableArrayList(userBOList));
         countResultLabel_USER.setText(String.valueOf(userBOList.size()));
     }
