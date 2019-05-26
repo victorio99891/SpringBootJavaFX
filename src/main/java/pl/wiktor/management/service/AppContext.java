@@ -9,7 +9,9 @@ import pl.wiktor.management.model.RoleBO;
 import pl.wiktor.management.model.UserBO;
 import pl.wiktor.management.repository.RoleRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
@@ -24,7 +26,8 @@ public class AppContext {
     private PatientBO patientToRegister;
     private PatientBO patientToEdit;
     private List<RoleBO> roleBOList;
-    private ExaminationBO examinationToManage;
+    private Map<Long, ExaminationBO> examinationToManage = new HashMap<>();
+    private Long examinationId;
 
     private boolean patientToEditAction;
 

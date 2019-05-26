@@ -496,8 +496,11 @@ public class MainController {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     ExaminationBO examinationFromRow = row.getItem();
-                    this.appContext.setExaminationToManage(examinationFromRow);
+                    //FIXME: single ExaminationBO
+                    //this.appContext.setExaminationToManage(examinationFromRow);
                     if (examinationFromRow != null) {
+                        this.appContext.getExaminationToManage().put(examinationFromRow.getId(), examinationFromRow);
+                        this.appContext.setExaminationId(examinationFromRow.getId());
                         manageExaminationByStatus(examinationFromRow);
                     }
                 }
@@ -533,15 +536,18 @@ public class MainController {
             this.examinationManagementTable_EXAMINATION.setDisable(false);
         } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.REQUESTED.getDisplayName())) {
             this.examinationManagementTable_EXAMINATION.setDisable(true);
-            appContext.setExaminationToManage(examinationFromRow);
+            this.appContext.getExaminationToManage().put(examinationFromRow.getId(), examinationFromRow);
+            this.appContext.setExaminationId(examinationFromRow.getId());
             stageManager.showUndecoratedScene(FxmlView.MAKE_EXAMINATION);
         } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.FOR_DESCRIPTION.getDisplayName())) {
             this.examinationManagementTable_EXAMINATION.setDisable(true);
-            appContext.setExaminationToManage(examinationFromRow);
+            this.appContext.getExaminationToManage().put(examinationFromRow.getId(), examinationFromRow);
+            this.appContext.setExaminationId(examinationFromRow.getId());
             stageManager.showUndecoratedScene(FxmlView.DESCRIBE_EXAMINATION);
         } else if (examinationFromRow.getStatus().equals(ExaminationStatusEnum.DONE.getDisplayName())) {
             this.examinationManagementTable_EXAMINATION.setDisable(true);
-            appContext.setExaminationToManage(examinationFromRow);
+            this.appContext.getExaminationToManage().put(examinationFromRow.getId(), examinationFromRow);
+            this.appContext.setExaminationId(examinationFromRow.getId());
             stageManager.showUndecoratedScene(FxmlView.DONE_EXAMINATION);
         }
     }
