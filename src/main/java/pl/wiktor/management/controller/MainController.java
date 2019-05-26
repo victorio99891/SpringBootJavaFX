@@ -505,18 +505,18 @@ public class MainController {
                     }
                 }
             });
-            row.setOnContextMenuRequested(event -> {
-                ExaminationBO examinationBO = row.getItem();
-                if (examinationBO != null) {
-                    if (examinationBO.getStatus().equals(ExaminationStatusEnum.DONE.name())) {
-                        this.showResultMenuItem_EXAMINATION.setDisable(false);
-                    } else {
-                        this.showResultMenuItem_EXAMINATION.setDisable(true);
-                    }
-                } else {
-                    this.showResultMenuItem_EXAMINATION.setDisable(true);
-                }
-            });
+//            row.setOnContextMenuRequested(event -> {
+//                ExaminationBO examinationBO = row.getItem();
+//                if (examinationBO != null) {
+//                    if (examinationBO.getStatus().equals(ExaminationStatusEnum.DONE.name())) {
+//                        this.showResultMenuItem_EXAMINATION.setDisable(false);
+//                    } else {
+//                        this.showResultMenuItem_EXAMINATION.setDisable(true);
+//                    }
+//                } else {
+//                    this.showResultMenuItem_EXAMINATION.setDisable(true);
+//                }
+//            });
             return row;
         });
     }
@@ -590,10 +590,6 @@ public class MainController {
                 fillExaminationTable(examinationService.findAllExaminations());
             }
         }
-    }
-
-    //TODO: Implement action on showResultWindow in EXAMINATION TABLE
-    public void showResultContextMenu_EXAMINATION(ActionEvent actionEvent) {
     }
     //</editor-fold>
 }
