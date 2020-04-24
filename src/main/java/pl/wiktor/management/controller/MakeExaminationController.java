@@ -14,6 +14,8 @@ import pl.wiktor.management.service.ExaminationService;
 import pl.wiktor.management.service.PatientService;
 import pl.wiktor.management.utils.StageManager;
 
+import java.io.IOException;
+
 @Controller
 public class MakeExaminationController {
 
@@ -60,7 +62,6 @@ public class MakeExaminationController {
 
 
             examinationService.makeExamination(this.appContext.getExaminationToManage().get(examinationId), true);
-            mainController.fillExaminationTable(examinationService.findAllExaminations());
 
 
             this.exitButton.setDisable(true);
@@ -89,7 +90,6 @@ public class MakeExaminationController {
             preview.setImage(new Image("/examination/" + this.appContext.getExaminationToManage().get(examinationId).getImgTechBO().getName() + ".jpg"));
 
             examinationService.makeExamination(this.appContext.getExaminationToManage().get(examinationId), false);
-            mainController.fillExaminationTable(examinationService.findAllExaminations());
             this.exitButton.setDisable(false);
 
         });
@@ -100,8 +100,8 @@ public class MakeExaminationController {
 
     }
 
-    public void closeWindow(ActionEvent actionEvent) {
+    public void closeWindow(ActionEvent actionEvent) throws IOException {
         stageManager.closeStageOnEvent(actionEvent);
-        mainController.enableExaminationTableView();
+        mainController.switchToExaminationManagement();
     }
 }

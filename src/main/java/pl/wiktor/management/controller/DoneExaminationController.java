@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.service.AppContext;
@@ -15,24 +16,15 @@ import pl.wiktor.management.service.ExaminationService;
 import pl.wiktor.management.service.PatientService;
 import pl.wiktor.management.utils.StageManager;
 
+import java.io.IOException;
+
 @Controller
 public class DoneExaminationController {
 
 
-    private final PatientService patientService;
-    private final ExaminationService examinationService;
     private final AppContext appContext;
     private final StageManager stageManager;
     private final MainController mainController;
-
-    public DoneExaminationController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController, ExaminationService examinationService) {
-        this.patientService = patientService;
-        this.appContext = appContext;
-        this.stageManager = stageManager;
-        this.mainController = mainController;
-        this.examinationService = examinationService;
-    }
-
     @FXML
     public ImageView preview;
     @FXML
@@ -42,6 +34,12 @@ public class DoneExaminationController {
     @FXML
     public Button exitButton;
 
+    @Autowired
+    public DoneExaminationController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController, ExaminationService examinationService) {
+        this.appContext = appContext;
+        this.stageManager = stageManager;
+        this.mainController = mainController;
+    }
 
     @FXML
     public void initialize() {
@@ -52,8 +50,8 @@ public class DoneExaminationController {
     }
 
 
-    public void exit(ActionEvent actionEvent) {
+    public void exit(ActionEvent actionEvent) throws IOException {
         stageManager.closeStageOnEvent(actionEvent);
-        mainController.enableExaminationTableView();
+        mainController.switchToExaminationManagement();
     }
 }

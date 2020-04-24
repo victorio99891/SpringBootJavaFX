@@ -9,6 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.exceptions.ExceptionInfo;
@@ -18,12 +19,16 @@ import pl.wiktor.management.service.AppContext;
 import pl.wiktor.management.service.PatientService;
 import pl.wiktor.management.utils.StageManager;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 public class NewPatientController {
 
+    private final AppContext appContext;
+    private final PatientService patientService;
+    private final StageManager stageManager;
     @FXML
     public AnchorPane window;
     @FXML
@@ -42,15 +47,11 @@ public class NewPatientController {
     public Label peselValidationLabel;
     @FXML
     public Button registerButton;
+    private MainController mainController;
     private Map<String, Boolean> genderMap = new HashMap<>();
-
     private PatientBO newPatient = new PatientBO();
 
-    private final AppContext appContext;
-    private final PatientService patientService;
-    private final StageManager stageManager;
-    private final MainController mainController;
-
+    @Autowired
     public NewPatientController(@Lazy StageManager stageManager, AppContext appContext, PatientService patientService, MainController mainController) {
         this.patientService = patientService;
         this.appContext = appContext;
@@ -58,18 +59,18 @@ public class NewPatientController {
         this.mainController = mainController;
     }
 
-    public void register(ActionEvent event) {
+    public void register(ActionEvent event) throws IOException {
         if (!this.appContext.isPatientToEditAction()) {
             if (!patientService.checkIfPatientExist(newPatient.getPesel())) {
                 patientService.savePatient(newPatient);
-                mainController.fillPatientManagementTable(patientService.findAllPatients());
                 stageManager.closeStageOnEvent(event);
+                mainController.switchToPatientManagement();
             } else {
                 ExceptionResolverService.resolve(ExceptionInfo.PATIENT_EXIST);
             }
         } else {
             patientService.savePatient(newPatient);
-            mainController.fillPatientManagementTable(patientService.findAllPatients());
+            mainController.switchToPatientManagement();
             appContext.setPatientToEditAction(false);
             stageManager.closeStageOnEvent(event);
             newPatient = new PatientBO();

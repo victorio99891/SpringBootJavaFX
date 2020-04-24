@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.wiktor.management.model.RoleBO;
@@ -15,12 +16,16 @@ import pl.wiktor.management.service.AppContext;
 import pl.wiktor.management.service.UserService;
 import pl.wiktor.management.utils.StageManager;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 public class UserEditController {
 
+    private final StageManager stageManager;
+    private final AppContext appContext;
+    private final UserService userService;
     @FXML
     public AnchorPane window;
     @FXML
@@ -31,26 +36,19 @@ public class UserEditController {
     public TextField emailLabel;
     @FXML
     public ChoiceBox<String> roleMenu;
-
     @FXML
     public Button submitButton;
     @FXML
     public Button saveButton;
-
-
+    private MainController mainController;
     private UserBO userToEdit;
 
-    private final StageManager stageManager;
-    private final AppContext appContext;
-    private final MainController mainController;
-    private final UserService userService;
-
-
-    public UserEditController(@Lazy StageManager stageManager, AppContext appContext, MainController mainController, UserService userService) {
+    @Autowired
+    public UserEditController(@Lazy StageManager stageManager, AppContext appContext, UserService userService, MainController mainController) {
         this.stageManager = stageManager;
         this.appContext = appContext;
-        this.mainController = mainController;
         this.userService = userService;
+        this.mainController = mainController;
     }
 
     @FXML
@@ -91,9 +89,9 @@ public class UserEditController {
     }
 
     @FXML
-    public void save(ActionEvent actionEvent) {
+    public void save(ActionEvent actionEvent) throws IOException {
         userService.updateUserData(this.userToEdit);
-        mainController.fillUserManagementTable(userService.findAllUsers());
         stageManager.closeStageOnEvent(actionEvent);
+        mainController.switchToUserManagement();
     }
 }

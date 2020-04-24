@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<HBox minHeight="0.0" minWidth="0.0" prefHeight="555.0" prefWidth="904.0" style="-fx-background-color: #0067c1;"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+>
+    <children>
+        <VBox prefHeight="547.0" prefWidth="121.0">
+            <children>
+                <Button fx:id="refreshButton_USER" mnemonicParsing="false" onAction="#refresh_USER"
+                        prefHeight="80.0" prefWidth="80.0" styleClass="refreshButton"
+                        stylesheets="@../css/Main.css">
+                    <VBox.margin>
+                        <Insets left="15.0" top="20.0"/>
+                    </VBox.margin>
+                    <graphic>
+                        <ImageView fx:id="refreshButtonImgView_USER" fitHeight="70.0" fitWidth="70.0"
+                                   pickOnBounds="true" preserveRatio="true" styleClass="../css/Main.css">
+                            <image>
+                                <Image url="@../icon/refresh.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </children>
+        </VBox>
+        <VBox prefHeight="547.0" prefWidth="966.0">
+            <children>
+                <TableView fx:id="userManagementTable_USER" prefHeight="475.0" prefWidth="792.0">
+                    <columns>
+                        <TableColumn fx:id="column_id_USER" editable="false" prefWidth="89.0" sortable="false"
+                                     text="ID"/>
+                        <TableColumn fx:id="column_lastName_USER" prefWidth="177.0" text="LASTNAME"/>
+                        <TableColumn fx:id="column_firstName_USER" prefWidth="173.0" text="FIRSTNAME"/>
+                        <TableColumn fx:id="column_email_USER" editable="false" prefWidth="199.0"
+                                     sortable="false" text="EMAIL"/>
+                        <TableColumn fx:id="column_role_USER" prefWidth="310.0" text="ROLE"/>
+                    </columns>
+                    <VBox.margin>
+                        <Insets right="10.0"/>
+                    </VBox.margin>
+                    <contextMenu>
+                        <ContextMenu fx:id="contextMenu_USER">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#editSelectedContextMenu_USER"
+                                          text="EDIT USER"/>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <MenuItem mnemonicParsing="false" onAction="#deleteSelectedContextMenu_USER"
+                                          text="DELETE USER"/>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </TableView>
+                <HBox alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="789.0">
+                    <children>
+                        <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Results count:">
+                            <HBox.margin>
+                                <Insets right="5.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <Label fx:id="countResultLabel_USER" alignment="CENTER_RIGHT" prefHeight="19.0"
+                               prefWidth="158.0" style="-fx-font-weight: bold; -fx-text-fill: white;"
+                               text="2147465123">
+                            <HBox.margin>
+                                <Insets right="15.0"/>
+                            </HBox.margin>
+                            <font>
+                                <Font size="13.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="53.0" prefWidth="791.0">
+                    <children>
+                        <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="FIND BY:"
+                               textFill="WHITE">
+                            <HBox.margin>
+                                <Insets right="5.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="searchChoiceBox_USER" prefWidth="150.0">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </ChoiceBox>
+                        <Label layoutX="178.0" layoutY="21.0"
+                               style="-fx-text-fill: white; -fx-font-weight: bold;" text="TEXT OR NUMBER:">
+                            <HBox.margin>
+                                <Insets right="5.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="searchTextBox_USER" prefHeight="25.0" prefWidth="269.0">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </TextField>
+                        <Button fx:id="searchButton_USER" mnemonicParsing="false" onAction="#search_USER"
+                                prefHeight="25.0" prefWidth="115.0" text="Search">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="clearButton_USER" mnemonicParsing="false" onAction="#clearResults_USER"
+                                text="Clear"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>
+

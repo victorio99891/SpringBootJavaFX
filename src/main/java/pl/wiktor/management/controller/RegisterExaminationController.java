@@ -13,6 +13,7 @@ import pl.wiktor.management.service.ExaminationService;
 import pl.wiktor.management.service.ImgTechService;
 import pl.wiktor.management.utils.StageManager;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,6 +21,11 @@ import java.util.stream.Collectors;
 @Controller
 public class RegisterExaminationController {
 
+    private final StageManager stageManager;
+    private final ImgTechService imgTechService;
+    private final ExaminationService examinationService;
+    private final AppContext appContext;
+    private final MainController mainController;
     @FXML
     public Label firstNameRegisterLabel;
     @FXML
@@ -30,13 +36,6 @@ public class RegisterExaminationController {
     public ChoiceBox<String> examinationRegisterChoicebox;
     @FXML
     public Button registerButton;
-
-
-    private final StageManager stageManager;
-    private final ImgTechService imgTechService;
-    private final ExaminationService examinationService;
-    private final AppContext appContext;
-    private final MainController mainController;
 
     public RegisterExaminationController(@Lazy StageManager stageManager,
                                          ImgTechService imgTechService,
@@ -51,7 +50,7 @@ public class RegisterExaminationController {
     }
 
 
-    public void registerExamination(ActionEvent actionEvent) {
+    public void registerExamination(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("[REGISTER ALERT]");
         alert.setHeaderText(null);
@@ -59,9 +58,9 @@ public class RegisterExaminationController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             examinationService.registerExamination(this.appContext.getPatientToRegister(), this.examinationRegisterChoicebox.getValue());
-            mainController.fillExaminationTable(examinationService.findAllExaminations());
             mainController.tabPaneComponent.getSelectionModel().select(mainController.examinationManagementTab);
             stageManager.closeStageOnEvent(actionEvent);
+            mainController.switchToExaminationManagement();
         }
     }
 

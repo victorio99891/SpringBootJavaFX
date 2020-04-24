@@ -17,6 +17,7 @@ import pl.wiktor.management.service.ExaminationService;
 import pl.wiktor.management.service.PatientService;
 import pl.wiktor.management.utils.StageManager;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Controller
@@ -66,12 +67,14 @@ public class DescribeExaminationController {
         examinationService.saveDescription(this.appContext.getExaminationToManage().get(examinationId), textArea.getText());
         confirmButton.setDisable(true);
         textArea.setEditable(false);
-        mainController.fillExaminationTable(examinationService.findAllExaminations());
+//        mainController.fillExaminationTable(examinationService.findAllExaminations());
+
     }
 
-    public void exit(ActionEvent actionEvent) {
+    public void exit(ActionEvent actionEvent) throws IOException {
         stageManager.closeStageOnEvent(actionEvent);
-        mainController.enableExaminationTableView();
+//        mainController.enableExaminationTableView();
+        mainController.switchToExaminationManagement();
     }
 
 
