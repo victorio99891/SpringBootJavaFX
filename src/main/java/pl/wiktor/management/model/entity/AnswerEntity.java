@@ -1,10 +1,12 @@
 package pl.wiktor.management.model.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "answers")
 public class AnswerEntity {
@@ -18,6 +20,10 @@ public class AnswerEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private QuestionEntity question;
+
+    public AnswerEntity(String content) {
+        this.content = content;
+    }
 
     @Override
     public String toString() {

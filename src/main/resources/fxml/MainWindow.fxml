@@ -7,24 +7,25 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
+<Pane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="1021.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
     <children>
-        <TextField fx:id="answerTextFieldA" layoutX="210.0" layoutY="207.0" prefHeight="26.0" prefWidth="267.0" />
-        <Label layoutX="99.0" layoutY="212.0" prefHeight="17.0" prefWidth="111.0" text="Odpowiedzi:" />
-        <TextField fx:id="answerTextFieldB" layoutX="210.0" layoutY="244.0" prefHeight="26.0" prefWidth="267.0" />
-        <TextField fx:id="answerTextFieldC" layoutX="210.0" layoutY="280.0" prefHeight="26.0" prefWidth="267.0" />
-        <TextField fx:id="answerTextFieldD" layoutX="210.0" layoutY="319.0" prefHeight="26.0" prefWidth="267.0" />
+        <TextField fx:id="answerTextField" layoutX="210.0" layoutY="207.0" prefHeight="26.0" prefWidth="676.0" />
+        <Label layoutX="99.0" layoutY="212.0" prefHeight="17.0" prefWidth="111.0" text="Tekst odpowiedzi:" />
         <Label layoutX="99.0" layoutY="172.0" prefHeight="17.0" prefWidth="111.0" text="Pytanie:" />
-        <TextField fx:id="questionTextField" layoutX="210.0" layoutY="172.0" prefHeight="26.0" prefWidth="267.0" />
-        <Label layoutX="190.0" layoutY="212.0" prefHeight="17.0" prefWidth="12.0" text="a)" />
-        <Label layoutX="190.0" layoutY="249.0" prefHeight="17.0" prefWidth="12.0" text="b)" />
-        <Label layoutX="190.0" layoutY="285.0" prefHeight="17.0" prefWidth="12.0" text="c)" />
-        <Label layoutX="190.0" layoutY="324.0" prefHeight="17.0" prefWidth="12.0" text="d)" />
-        <ListView fx:id="listView" layoutX="99.0" layoutY="37.0" prefHeight="119.0" prefWidth="378.0" />
-        <Button layoutX="508.0" layoutY="173.0" mnemonicParsing="false" onAction="#save" text="Zapisz" />
-        <Button layoutX="508.0" layoutY="208.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="49.0" text="Usuń" />
-      <Button layoutX="497.0" layoutY="78.0" mnemonicParsing="false" onAction="#explode" text="Wybuchnij" />
-      <Label fx:id="explodeLabel" layoutX="105.0" layoutY="14.0" prefHeight="17.0" prefWidth="423.0" />
-      <TextArea fx:id="textArea" layoutX="81.0" layoutY="361.0" prefHeight="200.0" prefWidth="396.0" />
+        <TextField fx:id="questionTextField" layoutX="210.0" layoutY="172.0" prefHeight="26.0" prefWidth="676.0" />
+        <ListView fx:id="questionListView" layoutX="21.0" layoutY="37.0" prefHeight="119.0" prefWidth="378.0" />
+      <Button layoutX="907.0" layoutY="436.0" mnemonicParsing="false" onAction="#explode" text="Wybuchnij" />
+      <Label fx:id="explodeLabel" layoutX="38.0" layoutY="333.0" prefHeight="17.0" prefWidth="423.0" />
+      <TextArea fx:id="textArea" layoutX="38.0" layoutY="361.0" prefHeight="200.0" prefWidth="850.0" />
+      <ListView fx:id="answerListView" layoutX="508.0" layoutY="37.0" prefHeight="119.0" prefWidth="378.0" />
+      <Label layoutX="21.0" layoutY="14.0" prefHeight="17.0" prefWidth="135.0" text="Lista pytań:" />
+      <Label layoutX="508.0" layoutY="14.0" prefHeight="17.0" prefWidth="135.0" text="Lista odpowiedzi:" />
+      <Button fx:id="addQuestionBtn" layoutX="411.0" layoutY="53.0" mnemonicParsing="false" onAction="#addQuestion" text="Dodaj pytanie" />
+      <Button fx:id="deleteQuestionBtn" layoutX="411.0" layoutY="108.0" mnemonicParsing="false" onAction="#deleteQuestion" prefHeight="25.0" prefWidth="90.0" text="Usuń pytanie" />
+      <Button fx:id="addAnswerBtn" layoutX="900.0" layoutY="53.0" mnemonicParsing="false" onAction="#addAnswer" text="Dodaj odpowiedź" />
+      <Button fx:id="deleteAnswerBtn" layoutX="900.0" layoutY="108.0" mnemonicParsing="false" onAction="#deleteAnswer" prefHeight="25.0" prefWidth="109.0" text="Usuń odpowiedź" />
+      <Button fx:id="saveQuestionBtn" layoutX="903.0" layoutY="172.0" mnemonicParsing="false" onAction="#saveQuestion" prefHeight="26.0" prefWidth="79.0" text="Zapisz" />
+      <Button fx:id="saveAnswerBtn" layoutX="903.0" layoutY="207.0" mnemonicParsing="false" onAction="#saveAnswer" prefHeight="26.0" prefWidth="79.0" text="Zapisz" />
+      <Button layoutX="329.0" layoutY="279.0" mnemonicParsing="false" onAction="#chooseFile" text="Wybierz plik" />
     </children>
 </Pane>

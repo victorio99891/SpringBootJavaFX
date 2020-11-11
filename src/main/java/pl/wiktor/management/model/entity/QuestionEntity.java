@@ -1,13 +1,16 @@
 package pl.wiktor.management.model.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "questions")
 public class QuestionEntity {
@@ -19,5 +22,9 @@ public class QuestionEntity {
     private String content;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<AnswerEntity> answers;
+    private List<AnswerEntity> answers = new ArrayList<>();
+
+    public QuestionEntity(String content) {
+        this.content = content;
+    }
 }
