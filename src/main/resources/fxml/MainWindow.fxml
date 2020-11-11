@@ -1,76 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import java.net.URL?>
-<AnchorPane fx:id="window" maxHeight="614.0" maxWidth="1073.0" minHeight="614.0" minWidth="1073.0" prefHeight="614.0"
-            prefWidth="1073.0" style="-fx-background-color: #d9d9db;" styleClass="window"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.wiktor.management.controller.MainController">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wiktor.management.controller.MainController">
     <children>
-        <VBox prefHeight="614.0" prefWidth="1073.0">
-            <children>
-                <VBox alignment="CENTER" prefHeight="34.0" prefWidth="904.0">
-                    <children>
-                        <HBox alignment="CENTER" prefHeight="31.0" prefWidth="668.0">
-                            <children>
-                                <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="817.0">
-                                    <children>
-                                        <Label prefHeight="17.0" prefWidth="116.0" text="You logged as: "/>
-                                        <Label fx:id="authenticatedUserLabel" prefHeight="17.0" prefWidth="607.0"
-                                               style="-fx-text-fill: #004ac1; -fx-font-weight: bold;"/>
-                                    </children>
-                                    <HBox.margin>
-                                        <Insets left="20.0"/>
-                                    </HBox.margin>
-                                </HBox>
-                                <HBox alignment="CENTER" prefHeight="31.0" prefWidth="241.0">
-                                    <children>
-                                        <Button mnemonicParsing="false" onAction="#changePassword" prefHeight="29.0"
-                                                prefWidth="135.0" text="Change Password">
-                                            <HBox.margin>
-                                                <Insets right="20.0"/>
-                                            </HBox.margin>
-                                        </Button>
-                                        <Button layoutX="33.0" layoutY="13.0" mnemonicParsing="false" onAction="#logout"
-                                                prefHeight="25.0" prefWidth="76.0" style="-fx-font-weight: bold;"
-                                                text="Logout"/>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
-                <TabPane fx:id="tabPaneComponent" prefHeight="584.0" prefWidth="904.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                        <Tab fx:id="userManagementTab" closable="false" style="-fx-font-weight: bold;"
-                             styleClass="selectedTab" text="User Managment">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="555.0" prefWidth="904.0"
-                                            style="-fx-background-color: #0067c1;"/>
-                            </content>
-                        </Tab>
-                        <Tab fx:id="patientManagementTab" closable="false" style="-fx-font-weight: bold;"
-                             styleClass="selectedTab" text="Patient Management">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="555.0" prefWidth="904.0"
-                                            style="-fx-background-color: #27911b;"/>
-                            </content>
-                        </Tab>
-                        <Tab fx:id="examinationManagementTab" closable="false" style="-fx-font-weight: bold;"
-                             styleClass="selectedTab" text="Examination Management">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="555.0" prefWidth="904.0"
-                                            style="-fx-background-color: #8e1c6a;"/>
-                            </content>
-                        </Tab>
-                    </tabs>
-                </TabPane>
-            </children>
-        </VBox>
+        <TextField fx:id="answerTextFieldA" layoutX="210.0" layoutY="207.0" prefHeight="26.0" prefWidth="267.0" />
+        <Label layoutX="99.0" layoutY="212.0" prefHeight="17.0" prefWidth="111.0" text="Odpowiedzi:" />
+        <TextField fx:id="answerTextFieldB" layoutX="210.0" layoutY="244.0" prefHeight="26.0" prefWidth="267.0" />
+        <TextField fx:id="answerTextFieldC" layoutX="210.0" layoutY="280.0" prefHeight="26.0" prefWidth="267.0" />
+        <TextField fx:id="answerTextFieldD" layoutX="210.0" layoutY="319.0" prefHeight="26.0" prefWidth="267.0" />
+        <Label layoutX="99.0" layoutY="172.0" prefHeight="17.0" prefWidth="111.0" text="Pytanie:" />
+        <TextField fx:id="questionTextField" layoutX="210.0" layoutY="172.0" prefHeight="26.0" prefWidth="267.0" />
+        <Label layoutX="190.0" layoutY="212.0" prefHeight="17.0" prefWidth="12.0" text="a)" />
+        <Label layoutX="190.0" layoutY="249.0" prefHeight="17.0" prefWidth="12.0" text="b)" />
+        <Label layoutX="190.0" layoutY="285.0" prefHeight="17.0" prefWidth="12.0" text="c)" />
+        <Label layoutX="190.0" layoutY="324.0" prefHeight="17.0" prefWidth="12.0" text="d)" />
+        <ListView fx:id="listView" layoutX="99.0" layoutY="37.0" prefHeight="119.0" prefWidth="378.0" />
+        <Button layoutX="508.0" layoutY="173.0" mnemonicParsing="false" onAction="#save" text="Zapisz" />
+        <Button layoutX="508.0" layoutY="208.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="49.0" text="Usuń" />
+      <Button layoutX="497.0" layoutY="78.0" mnemonicParsing="false" onAction="#explode" text="Wybuchnij" />
+      <Label fx:id="explodeLabel" layoutX="105.0" layoutY="14.0" prefHeight="17.0" prefWidth="423.0" />
+      <TextArea fx:id="textArea" layoutX="81.0" layoutY="361.0" prefHeight="200.0" prefWidth="396.0" />
     </children>
-    <stylesheets>
-        <URL value="@../css/Main.css"/>
-    </stylesheets>
-</AnchorPane>
+</Pane>

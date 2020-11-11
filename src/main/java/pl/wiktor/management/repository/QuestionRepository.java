@@ -2,12 +2,13 @@ package pl.wiktor.management.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.wiktor.management.entity.RoleEntity;
+import pl.wiktor.management.model.entity.QuestionEntity;
 
 import java.util.Optional;
 
 @Repository
-public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
+public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> {
 
-    Optional<RoleEntity> findByName(String name);
+    Optional<QuestionEntity> findById(Long id);
+
 }

@@ -42,7 +42,7 @@ public class StartBootJavaFXApp extends Application {
     }
 
     protected void displayInitialScene() {
-        stageManager.switchScene(FxmlView.LOGIN);
+        stageManager.switchScene(FxmlView.MAIN);
     }
 
 

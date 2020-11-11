@@ -1,178 +1,156 @@
 package pl.wiktor.management.controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
-import pl.wiktor.management.service.*;
+import pl.wiktor.management.model.entity.QuestionEntity;
+import pl.wiktor.management.service.AppContext;
+import pl.wiktor.management.service.QuestionService;
 import pl.wiktor.management.utils.StageManager;
-import pl.wiktor.management.view.FxmlView;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 public class MainController {
 
 
     private final AppContext appContext;
     private final StageManager stageManager;
-    private final AuthenticationService authenticationService;
-    private final UserService userService;
-    private final PatientService patientService;
-    private final ExaminationService examinationService;
+    private final QuestionService questionService;
+    private List<QuestionEntity> questionEntities = new ArrayList<>();
+    private QuestionEntity editedQuestionEntity = null;
 
     @FXML
-    public AnchorPane window;
-    @FXML
-    public Label authenticatedUserLabel;
-    @FXML
-    public TabPane tabPaneComponent;
+    private Pane window;
 
     @FXML
-    public Tab userManagementTab;
+    private TextField answerTextFieldA;
 
     @FXML
-    public Tab patientManagementTab;
+    private TextField answerTextFieldB;
 
     @FXML
-    public Tab examinationManagementTab;
+    private TextField answerTextFieldC;
 
+    @FXML
+    private TextField answerTextFieldD;
+
+    @FXML
+    private TextField questionTextField;
+
+    @FXML
+    private Label explodeLabel;
+
+    @FXML
+    private TextArea textArea;
+
+    @FXML
+    private ListView<String> listView;
 
     public MainController(@Lazy StageManager stageManager,
                           AppContext appContext,
-                          AuthenticationService authenticationService,
-                          UserService userService,
-                          PatientService patientService,
-                          ExaminationService examinationService
+                          QuestionService questionService
     ) {
         this.stageManager = stageManager;
         this.appContext = appContext;
-        this.authenticationService = authenticationService;
-        this.userService = userService;
-        this.patientService = patientService;
-        this.examinationService = examinationService;
+        this.questionService = questionService;
     }
 
     @FXML
     public void initialize() throws IOException {
-        resolveLoggedUserRoles();
         stageManager.fadeInAnimation(window);
-        this.authenticatedUserLabel.setText(this.appContext.getAuthenticatedUser().getLastName()
-                + " "
-                + this.appContext.getAuthenticatedUser().getFirstName()
-                + " [ID: " + this.appContext.getAuthenticatedUser().getId() + "]" + " [" + this.appContext.getAuthenticatedUser().getRole() + "]");
-        if (authenticationService.isUser()) {
-            this.authenticatedUserLabel.setText(this.authenticatedUserLabel.getText() + " PLEASE CONTACT ADMINISTRATOR FOR ADDITIONAL PRIVILEGES!");
-            this.authenticatedUserLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold");
-        }
-
-
-        switchToUserManagement();
-        if (userManagementTab.isDisabled()) {
-            switchToPatientManagement();
-        }
-
-
-        registerSwitchTabEvent();
-    }
-
-
-    void registerSwitchTabEvent() {
-        tabPaneComponent.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-            if (newTab.idProperty().getValue().equals("userManagementTab")) {
-                System.err.println("changed to MANAGEMENT TAB");
-                try {
-                    switchToUserManagement();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (newTab.idProperty().getValue().equals("patientManagementTab")) {
-                System.err.println("changed to PATIENT MANAGEMENT TAB");
-                try {
-                    switchToPatientManagement();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (newTab.idProperty().getValue().equals("examinationManagementTab")) {
-                System.err.println("changed to EXAMINATION MANAGEMENT TAB");
-                try {
-                    switchToExaminationManagement();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        fetchQuestions();
     }
 
     @FXML
-    public void changePassword(ActionEvent actionEvent) {
-        stageManager.showScene(FxmlView.CHANGE_PASSWORD);
+    void save(ActionEvent event) {
+        QuestionEntity entity = this.questionEntities.stream()
+                .filter(item -> item.getId().equals(this.editedQuestionEntity.getId()))
+                .findFirst().orElseThrow(() -> new RuntimeException("Cannot find question with ID: " + this.editedQuestionEntity.getId()));
+        log.info("Save {}", this.editedQuestionEntity);
     }
 
     @FXML
-    public void logout(ActionEvent actionEvent) {
-        authenticationService.clearCredentials();
-        stageManager.fadeOutAnimation(window, FxmlView.LOGIN);
+    void delete(ActionEvent event) {
+        log.info("Delete {}", this.editedQuestionEntity);
+    }
+
+    @FXML
+    void explode(ActionEvent event) throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException, URISyntaxException {
+        /*
+         * export JAVA_HOME="/c/Program Files/Java/jdk1.8.0_241/"
+         * "$JAVA_HOME\bin\java" -jar target/PackagedJar.jar
+         *
+         * "$JAVA_HOME\bin\javac" -d . MojaKlasa.java
+         * "$JAVA_HOME\bin\jar" -cf External.jar pl/
+         * copy External.jar to the application resources
+         */
+
+//        URL url = getClass().getClassLoader().getResource("External.jar");
+//        log.info(url.toExternalForm());
+
+        try {
+            URL url = new File("lib/External.jar").toURI().toURL();
+            log.info(url.toString());
+            URLClassLoader child = new URLClassLoader(new URL[]{url}, this.getClass().getClassLoader());
+            Class classToLoad = Class.forName("pl.wiktor.MojaKlasa", true, child);
+            Method method = classToLoad.getDeclaredMethod("generate");
+            Object instance = classToLoad.newInstance();
+            method.invoke(instance);
+            explodeLabel.setText("Udało sie!");
+        } catch (Exception e) {
+            this.textArea.setText(e.toString());
+            explodeLabel.setText("Nie udało sie!");
+        }
+
+
     }
 
 
-    private void resolveLoggedUserRoles() {
-        if (authenticationService.isUser()) {
-            userManagementTab.setDisable(true);
-            tabPaneComponent.getTabs().remove(userManagementTab);
-            patientManagementTab.setDisable(true);
-            tabPaneComponent.getTabs().remove(patientManagementTab);
-            examinationManagementTab.setDisable(true);
-            tabPaneComponent.getTabs().remove(examinationManagementTab);
-        }
-        if (!authenticationService.isAdministrator()) {
-            userManagementTab.setDisable(true);
-            tabPaneComponent.getTabs().remove(userManagementTab);
-        }
-    }
-
-    public void rotateTheRefreshButton(ImageView buttonImageView) {
-        Thread thr = new Thread(() -> {
-
-            for (int i = 0; i <= 720; i += 5) {
-                buttonImageView.setStyle("-fx-rotate: " + i);
-                try {
-                    Thread.sleep(20L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+    private void fetchQuestions() {
+        this.questionEntities = this.questionService.findAll();
+        this.listView.setItems(FXCollections.observableArrayList(this.questionEntities.stream()
+                .map(QuestionEntity::getContent)
+                .collect(Collectors.toList())));
+        this.listView.setOnMouseClicked(event -> {
+            this.editedQuestionEntity = this.questionEntities.get(listView.getSelectionModel().getSelectedIndex());
+            fillQuestionAndAnswerFields();
         });
-        thr.start();
     }
 
-
-    public void switchToUserManagement() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UserManagementWindow.fxml"));
-        loader.setController(new UserManagementController(stageManager, userService, appContext, this));
-        HBox box = loader.load();
-        userManagementTab.setContent(box);
+    private void fillQuestionAndAnswerFields() {
+        questionTextField.setText(this.editedQuestionEntity.getContent());
+        answerTextFieldA.setText(getAnswerFromIndex(0));
+        answerTextFieldB.setText(getAnswerFromIndex(1));
+        answerTextFieldC.setText(getAnswerFromIndex(2));
+        answerTextFieldD.setText(getAnswerFromIndex(3));
     }
 
-    public void switchToPatientManagement() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PatientManagementWindow.fxml"));
-        loader.setController(new PatientManagementController(stageManager, patientService, appContext, this));
-        HBox box = loader.load();
-        patientManagementTab.setContent(box);
-    }
-
-    public void switchToExaminationManagement() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExaminationManagementWindow.fxml"));
-        loader.setController(new ExaminationManagementController(stageManager, examinationService, patientService, appContext, this));
-        HBox box = loader.load();
-        examinationManagementTab.setContent(box);
+    private String getAnswerFromIndex(int index) {
+        try {
+            return this.editedQuestionEntity.getAnswers().get(index).getContent();
+        } catch (IndexOutOfBoundsException e) {
+            log.error(e.getMessage());
+        }
+        return "(empty)";
     }
 
 
